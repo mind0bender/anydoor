@@ -5,10 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, Home, MapPin, SlidersHorizontal, Star, Wand2 } from "lucide-react";
 import { Listing, PriceTier } from "../data";
+import { useFavorites } from "@/components/FavoritesProvider";
 
 export type ViewMode = "grid" | "list";
 
 export interface CategoryPayload {
+  slug: string;
   title: string;
   tagline: string;
   total: number;
@@ -171,7 +173,7 @@ export default function DiscoverClient({ category, initialView }: Props) {
 
         <div className={view === "grid" ? "grid sm:grid-cols-2 gap-6" : "flex flex-col gap-4"}>
           {filteredListings.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} view={view} />
+            <ListingCard key={listing.id} listing={listing} view={view} categorySlug={category.slug} />
           ))}
           {filteredListings.length === 0 && (
             <div className="rounded-2xl border border-dashed border-[#0b6b5d]/30 bg-white/70 p-6 text-sm text-[#1e5a52]">
@@ -285,16 +287,20 @@ const ViewToggle = ({ view, onChange }: ViewToggleProps) => (
 interface ListingCardProps {
   listing: Listing;
   view: ViewMode;
+  categorySlug: string;
 }
 
-const ListingCard = ({ listing, view }: ListingCardProps) => {
+const ListingCard = ({ listing, view, categorySlug }: ListingCardProps) => {
+  const { isFavorite, toggleFavorite } = useFavorites();
   const { name, neighborhood, address, rating, image, startingFrom } = listing;
   const priceLabel = `From ${formatINR(startingFrom)}`;
   const isList = view === "list";
+  const selection = { listingId: listing.id, categorySlug };
+  const favorite = isFavorite(selection);
 
   const imageWrapperClasses = isList
-    ? "relative w-48 md:w-64 flex-shrink-0 aspect-[3/2] overflow-hidden rounded-2xl"
-    : "relative w-full aspect-[3/2] md:aspect-[4/3] max-h-[240px] overflow-hidden rounded-2xl";
+    ? "relative w-36 md:w-44 flex-shrink-0 aspect-[4/5] overflow-hidden rounded-2xl"
+    : "relative w-full aspect-[4/5] max-h-[320px] overflow-hidden rounded-2xl";
 
   return (
     <article
@@ -317,8 +323,14 @@ const ListingCard = ({ listing, view }: ListingCardProps) => {
             <Tag>
               <Star className="text-[#f59e0b] fill-[#f59e0b]" size={14} /> {rating.toFixed(1)}
             </Tag>
-            <button className="w-9 h-9 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow-sm border border-white/60 hover:scale-105 transition" aria-label="Favorite">
-              <Heart size={16} className="text-[#0b6b5d]" />
+            <button
+              type="button"
+              onClick={() => toggleFavorite(selection)}
+              aria-pressed={favorite}
+              className="w-9 h-9 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow-sm border border-white/60 hover:scale-105 transition"
+              aria-label={favorite ? "Remove favorite" : "Add favorite"}
+            >
+              <Heart size={16} className={favorite ? "text-[#0b6b5d] fill-[#0b6b5d]" : "text-[#0b6b5d]"} />
             </button>
           </div>
         )}
@@ -341,13 +353,19 @@ const ListingCard = ({ listing, view }: ListingCardProps) => {
         <div className="mt-auto flex gap-2 sm:gap-3 items-center flex-wrap">
           {!isList && <Tag tone="dark">{priceLabel}</Tag>}
           <Link
-            href="#"
+            href={`/discover/${encodeURIComponent(categorySlug)}/${encodeURIComponent(listing.id)}`}
             className="flex-1 min-w-[160px] flex items-center justify-center gap-2 rounded-full bg-[#0b6b5d] text-white font-semibold py-3 hover:opacity-90 transition"
           >
             Book Now <Wand2 size={16} />
           </Link>
-          <button className="w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow-sm border border-white/60 hover:scale-105 transition" aria-label="Favorite">
-            <Heart size={18} className="text-[#0b6b5d]" />
+          <button
+            type="button"
+            onClick={() => toggleFavorite(selection)}
+            aria-pressed={favorite}
+            className="w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow-sm border border-white/60 hover:scale-105 transition"
+            aria-label={favorite ? "Remove favorite" : "Add favorite"}
+          >
+            <Heart size={18} className={favorite ? "text-[#0b6b5d] fill-[#0b6b5d]" : "text-[#0b6b5d]"} />
           </button>
         </div>
       </div>

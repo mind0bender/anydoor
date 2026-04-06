@@ -30,6 +30,7 @@ interface FeaturedBusiness {
   rating: number;
   image: string;
   cta: string;
+  href: string;
 }
 
 interface ProofItem {
@@ -78,6 +79,7 @@ const featured: FeaturedBusiness[] = [
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuCmNLhCAXXV8beY2qoGdd699NNEE2ZJuDPXuOo8jxYYIr-9lzlZTlV6LwA2sN-mmJqabohY4eNrmUrilNy6uvt2zqhQRolZwEndb4UTZ_DSo-5QApILWC0mZqYAyhtxU0rC9C4OdimyneEvp0THSmmbWgjNmMdunaNIF2z_NzCjKU8SqqSefDFDggjt4XPALzY7kGCgUA2f8pf0vCJmC_MJjCgIxiirhFd-wXXHHjoBPGMCGk6O1B8Mp4Sn3qyCA2Yc2y8Er2VZTvqk",
     cta: "Book Consultation",
+    href: "/discover/hair-salon/nordic-cut",
   },
   {
     name: "Precision Garage",
@@ -86,6 +88,7 @@ const featured: FeaturedBusiness[] = [
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuDDqVEEMHHmMLcpBSmo6oAAxZDEu2-vqoBAZ8hCbs3qt8tCa4RLEwVSrzBZ-3EPORIhwlDIO1J_i7FBhg8_r1gTIFgp03-C9nGBqx1ivuwqWaP6hcQHsejMLPR6p_ZgheVwLq1IfzwOtgWoG2CvDz2YQW8iaQ-C_j6zbmFr37QXkNOYUigC_g3lgVZDxh15tr1Ecz0Cvp5EOz4ZzHjpjR6PKkFwfGghQz9-mgi_DWc3AemOrTJLM9ieKqQmkcyHx8ni1x9Tg6rlZbLA",
     cta: "Schedule Service",
+    href: "/discover/auto-repair/precision-garage",
   },
   {
     name: "Bloom Wellness",
@@ -94,6 +97,7 @@ const featured: FeaturedBusiness[] = [
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuCO0_O9c6TdhGRxXzQpeA1mHbG7ckMqlhIfjSa8geDPtjJleWE5QJCSvAtn8ZLYx-i9dPp-ZYh2ErWwn_8ZJJLBTgX0A4dIinOwytbBMbhp21E_ZONRe6W5LM7x3FPhGSjQz_QYur6YwfEQ0GDEfJVgrmEP1PaFecdzzW7m_hVd_zFVlOr0O9bWZ8JJaZCDL2I84FcJ6pAtRqoh6F_7sGUbByElAowrlC2NrEh2649kb0HSODJkTaAOZGSp5MtoVZaUx3JZkGC1R95o",
     cta: "Claim Intro Pass",
+    href: "/discover/spa/verdant-oasis",
   },
   {
     name: "Azure Dental Arts",
@@ -102,6 +106,7 @@ const featured: FeaturedBusiness[] = [
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuBnQxKmzIMZmSMDTCOwtK2jBwej8wYTR8NrEWPGjEX0LWweGvCxDSPA-Blx-7d328mQsomvQohQjvTuwkeGTYFq3DKb16qYrYjJZsl4nOxQQ6QEpi-NeCfDoujz9hj2EfS75g6USdkMKF6mo_YSAXdQFYxbSna3sJAltcqFtN90pZnPqMUu3Mc0Pt-WKeWzvC8qr5t-z3c4wa85NdJP7mTQgIH6H3t05Zr6mcHyAprnSPITTZaVWR206kb8WoVDiu--nDeAmzN2d--B",
     cta: "Book Checkup",
+    href: "/discover/dentist/azure-dental",
   },
 ];
 
@@ -135,10 +140,10 @@ const Home: NextPage = (): JSX.Element => {
         <section className={`flex flex-col gap-6`}>
           <div className={`flex items-center justify-between`}>
             <h2 className={`text-2xl sm:text-3xl font-semibold`}>Refined Categories</h2>
-            <button className={`flex items-center gap-2 text-[#0b6b5d] font-semibold hover:gap-3 transition`}> 
+            <Link href="/discover" className={`flex items-center gap-2 text-[#0b6b5d] font-semibold hover:gap-3 transition`}> 
               View all
               <ArrowRight size={16} />
-            </button>
+            </Link>
           </div>
           <div className={`grid grid-cols-2 md:grid-cols-4 gap-4`}> 
             {categories.map((item) => (
@@ -213,7 +218,7 @@ interface FeaturedCardProps {
 }
 
 const FeaturedCard = ({ business }: FeaturedCardProps): JSX.Element => {
-  const { name, description, rating, image, cta } = business;
+  const { name, description, rating, image, cta, href } = business;
   return (
     <div className={`bg-white/90 rounded-3xl shadow-sm border border-white/60 overflow-hidden flex flex-col`}> 
       <div className={`relative aspect-square overflow-hidden`}>
@@ -226,7 +231,7 @@ const FeaturedCard = ({ business }: FeaturedCardProps): JSX.Element => {
       <div className={`p-4 flex flex-col gap-2 flex-1`}>
         <div className={`font-semibold text-lg`}>{name}</div>
         <div className={`text-sm text-[#1e5a52]`}>{description}</div>
-        <button className={`mt-auto w-full rounded-full border border-[#0b6b5d] text-[#0b6b5d] font-semibold py-3 hover:bg-[#0b6b5d] hover:text-white transition`}>{cta}</button>
+        <Link href={href} className={`mt-auto w-full rounded-full border border-[#0b6b5d] text-[#0b6b5d] font-semibold py-3 hover:bg-[#0b6b5d] hover:text-white transition inline-flex items-center justify-center`}>{cta}</Link>
       </div>
     </div>
   );

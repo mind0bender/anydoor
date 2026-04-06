@@ -28,6 +28,7 @@ const DiscoverCategoryPage = async ({ params, searchParams }: PageProps) => {
       <div className={`w-full max-w-none px-5 sm:px-8 lg:px-12 xl:px-16 py-10 flex flex-col gap-8`}>
         <DiscoverClient
           category={{
+            slug: category.slug,
             title: category.title,
             tagline: category.tagline,
             total: category.total,
