@@ -131,7 +131,7 @@ const proof: ProofItem[] = [
   },
 ];
 
-const Home: NextPage = (): JSX.Element => {
+const Home = (): JSX.Element => {
   return (
     <main className={`w-full grow bg-[#d5fff9] text-[#003531]`}>
       <div className={`w-full max-w-none px-5 sm:px-8 lg:px-12 xl:px-16 py-12 flex flex-col gap-16`}>

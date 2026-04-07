@@ -11,7 +11,7 @@ const Navbar: FC = (): JSX.Element => {
   const links = [
     { href: "/discover", label: "Discover", match: "/discover" },
     { href: "/bookings", label: "Bookings", match: "/bookings" },
-    { href: "/favorites", label: "Favorites", match: "/favorites" },
+    { href: "/favourites", label: "Favourites", match: "/favourites" },
   ] as const;
 
   return (
