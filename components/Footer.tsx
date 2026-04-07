@@ -1,58 +1,40 @@
+import Link from "next/link";
 import { FC, JSX } from "react";
 
 const Footer: FC = (): JSX.Element => {
   return (
-    <footer
-      className={`bg-primary text-primary-100 px-8 py-12 gap-8 flex flex-col justify-center items-center`}
-    >
-      <table className={`w-full table-auto border-separate border-spacing-4`}>
-        <thead>
-          <tr className={`font-semibold table-row`}>
-            <td className={`text-2xl sm:text-4xl font-semibold px-2`}>
-              AnyDoor
-            </td>
-            <td className={`px-2`}>Explore</td>
-            <td className={`px-2`}>Platform</td>
-            <td className={`px-2 hidden sm:table-cell text-center`}>
-              Join The Journey
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className={`table-row`}>
-            <td className={`px-2 align-top`}>
-              <div className={`max-w-64 sm:max-w-96`}>
-                Redefining local discovery through intentional design and
-                uncompromising quality.
-              </div>
-            </td>
-            <td className={`px-2`}>
-              <ul className={`text-primary-100/80`}>
-                <li>Featured Artisans</li>
-                <li>Wellness Guild</li>
-                <li>Automotive Experts</li>
-                <li>Local Favourites</li>
-              </ul>
-            </td>
-            <td className={`px-2`}>
-              <ul className={`text-primary-100/80`}>
-                <li>Featured Artisans</li>
-                <li>Wellness Guild</li>
-                <li>Automotive Experts</li>
-                <li>Local Favourites</li>
-              </ul>
-            </td>
-            <td className={`px-2 sm:flex flex-col gap-4 hidden`}>
-              <NewsLetter />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div className={`flex flex-col gap-4 sm:hidden`}>
-        <div className={`font-semibold w-full text-center`}>
-          Join The Journey
+    <footer className="bg-[#003531] text-[#e5fff7] px-6 sm:px-10 py-12 mt-8">
+      <div className="max-w-[1400px] mx-auto grid gap-10 md:grid-cols-4">
+        <div className="space-y-4 md:col-span-2">
+          <h2 className="text-2xl sm:text-3xl font-bold">AnyDoor</h2>
+          <p className="max-w-xl text-[#b7e6dc]">
+            Discover premium local services, book in minutes, and keep every step connected from discovery to confirmation.
+          </p>
         </div>
-        <NewsLetter />
+
+        <div>
+          <h3 className="font-semibold mb-3">Explore</h3>
+          <ul className="space-y-2 text-[#b7e6dc] text-sm">
+            <li><Link className="hover:text-white transition" href="/discover/spa">Spa</Link></li>
+            <li><Link className="hover:text-white transition" href="/discover/hair-salon">Hair Salon</Link></li>
+            <li><Link className="hover:text-white transition" href="/discover/auto-repair">Auto Repair</Link></li>
+            <li><Link className="hover:text-white transition" href="/discover/dentist">Dentist</Link></li>
+          </ul>
+        </div>
+
+        <div className="space-y-3">
+          <h3 className="font-semibold">Stay in the loop</h3>
+          <NewsLetter />
+        </div>
+      </div>
+
+      <div className="max-w-[1400px] mx-auto mt-8 pt-4 border-t border-white/15 text-xs text-[#9fd8cc] flex flex-wrap items-center justify-between gap-2">
+        <span>© 2026 AnyDoor. Curated local booking.</span>
+        <div className="flex gap-4">
+          <Link href="/discover" className="hover:text-white transition">Discover</Link>
+          <Link href="/bookings" className="hover:text-white transition">Bookings</Link>
+          <Link href="/favorites" className="hover:text-white transition">Favorites</Link>
+        </div>
       </div>
     </footer>
   );
@@ -60,17 +42,17 @@ const Footer: FC = (): JSX.Element => {
 
 const NewsLetter: FC = (): JSX.Element => {
   return (
-    <>
+    <div className="flex flex-col gap-3">
       <input
-        className={`border border-primary-200/80 rounded-full px-4 py-2 text-primary-100 outline-none`}
+        className="border border-white/30 rounded-full px-4 py-2 bg-transparent text-[#e5fff7] placeholder:text-[#9fd8cc] outline-none"
         placeholder="Your email address"
       />
       <button
-        className={`w-full px-4 py-2 flex justify-center items-center bg-primary-200 rounded-full text-primary outline-none cursor-pointer hover:ring ring-primary-100/40`}
+        className="w-full px-4 py-2 flex justify-center items-center bg-[#d5fff9] rounded-full text-[#003531] font-semibold outline-none cursor-pointer hover:bg-white transition"
       >
         Subscribe
       </button>
-    </>
+    </div>
   );
 };
 

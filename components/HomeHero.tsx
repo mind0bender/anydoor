@@ -1,195 +1,65 @@
-import { Services } from "@/types/service";
-import {
-  ArrowRight,
-  Flower,
-  LocationEdit,
-  Pin,
-  Scissors,
-  Search,
-  Smile,
-  Star,
-  Wrench,
-} from "lucide-react";
-import Image from "next/image";
 import { FC, JSX } from "react";
-
-const services: Services[] = [
-  Services.Plumbers,
-  Services.Electricians,
-  Services.Accountants,
-  Services.Cleaners,
-  Services.Landscapers,
-  Services.Carpenters,
-  Services.Painters,
-  Services.Lawyers,
-  Services.Dentists,
-];
+import { MapPin, Search, Star } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 const HomeHero: FC = (): JSX.Element => {
   return (
-    <div
-      className={`w-full flex flex-col justify-center items-center py-8 gap-12`}
-    >
-      <div
-        className={`flex flex-col sm:flex-row justify-around items-center gap-12 w-full px-8 sm:px-12`}
-      >
-        <div className={`max-w-lg flex flex-col gap-6`}>
-          <div className={`text-6xl whitespace-nowrap font-semibold`}>
-            <div className={`text-teal-950`}>Elevate your</div>
-            <div className={`italic`}>local ritual.</div>
+    <section className={`w-full bg-[#dff8f2] text-[#003531] px-6 sm:px-10 lg:px-16 py-12 lg:py-16 rounded-3xl shadow-sm`}> 
+      <div className={`grid lg:grid-cols-12 gap-10 items-center`}>
+        <div className={`lg:col-span-6 flex flex-col gap-6`}> 
+          <div className={`text-5xl lg:text-6xl font-semibold leading-tight`}>
+            <div className={`text-[#0f372f]`}>Elevate your</div>
+            <div className={`italic text-[#0b6b5d]`}>local ritual.</div>
           </div>
-          <div>
-            Access a handpicked selection of top-tier services, from serene spas
-            to expert mechanics. Seamlessly booked, beautifully delivered.
-          </div>
-          <div className={`bg-white px-4 py-4 rounded-3xl flex flex-col gap-4`}>
-            <label
-              className={`bg-teal-200 rounded-full flex items-center px-4`}
-            >
-              <Search />
+          <p className={`text-lg text-[#1e5a52] max-w-xl`}>
+            Access a handpicked selection of top-tier services, from serene spas to expert mechanics. Seamlessly booked, beautifully delivered.
+          </p>
+          <div className={`bg-white rounded-full shadow-md flex flex-col sm:flex-row gap-3 p-3`}>
+            <label className={`flex items-center gap-3 bg-[#eef8f4] rounded-full px-4 py-3 w-full`}>
+              <Search className={`text-[#0b6b5d]`} size={18} />
               <input
-                className={`px-3 py-3 w-full outline-none`}
+                className={`w-full bg-transparent outline-none text-[#0f372f] placeholder:text-[#0f372f]/60`}
                 placeholder="What are you looking for?"
               />
             </label>
-            <label
-              className={`bg-teal-200 rounded-full flex items-center px-4`}
-            >
-              <LocationEdit />
+            <label className={`flex items-center gap-3 bg-[#eef8f4] rounded-full px-4 py-3 w-full`}>
+              <MapPin className={`text-[#0b6b5d]`} size={18} />
               <input
-                className={`px-3 py-3 w-full outline-none`}
+                className={`w-full bg-transparent outline-none text-[#0f372f] placeholder:text-[#0f372f]/60`}
                 placeholder="Near me"
               />
             </label>
-            <button
-              className={`bg-primary text-primary-100 rounded-full font-semibold px-4 py-3 outline-none focus:ring-3 hover:ring-3 ring-primary/40 duration-200 cursor-pointer`}
+            <Link
+              href="/discover/spa"
+              className={`bg-gradient-to-r from-[#0f6b5a] to-[#0c5247] text-white font-semibold rounded-full px-6 py-3 shrink-0 hover:opacity-90 transition text-center`}
             >
               Explore
-            </button>
+            </Link>
           </div>
         </div>
-        <div className={`relative py-12 px-4 w-full sm:w-auto`}>
-          <div className={`relative w-full sm:w-96 lg:w-120 aspect-12/16`}>
+        <div className={`lg:col-span-6 relative flex justify-center`}>
+          <div className={`relative w-full max-w-[420px] aspect-[4/5] rounded-[28px] overflow-hidden rotate-2 hover:rotate-0 transition duration-500 shadow-lg`}>
             <Image
-              className={`object-cover rounded-3xl rotate-2 hover:rotate-0 duration-200`}
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9bAiXXFru4FDEK5wabe4aoV7Xd4NlbmLUKBTkaZrqdYg2ZZPux8JI_jSArMK1jWphl4s44-gBDma09vX4_Hx43EzX8Cc7bkoUgebwccGRtYllJYmqX5FoRyl7dBTGdcD0RojC9Jc377gsxpaSSlXtQDvWN83YmiHBKisOt_bt2g_cvTl4Gm6iG5BR6wIQ_1NPBLfn2lmExnoR3_cKzryd3P61miQs02NirpLBHbsiasH_XlgN84adaMoK30UoRpF7X5rbcgyPCj7_"
+              alt="Luxurious minimalist spa interior"
               fill
-              alt="Service"
-              src={`/hero.png`}
+              className={`w-full h-full object-cover`}
+              sizes="(max-width: 1024px) 90vw, 420px"
             />
-          </div>
-          <div
-            className={`bg-white/80 absolute bottom-4 -left-8 backdrop-blur-sm rounded-md p-4 -rotate-2 shadow-md shadow-primary/20`}
-          >
-            <div
-              className={`font-semibold uppercase text-xs flex justify-center items-center gap-2 text-teal-700`}
-            >
-              <Star size={16} className={`text-yellow-500 fill-yellow-400`} />
-              Top rated
-            </div>
-            <div className={`font-bold text-sm`}>
-              Lumina Wellness &amp;
-              <br />
-              Esthetics
+            <div className={`absolute bottom-4 left-4 bg-white/85 backdrop-blur-md rounded-2xl p-4 shadow-md max-w-[220px] border border-white/70`}>
+              <div className={`flex items-center gap-2 text-xs font-bold uppercase text-[#0f6b5a] tracking-widest mb-2`}>
+                <Star className={`text-[#ffb703] fill-[#ffb703]`} size={16} />
+                Top Rated
+              </div>
+              <p className={`font-semibold leading-tight text-[#0f372f]`}>
+                Lumina Wellness & Esthetics
+              </p>
             </div>
           </div>
         </div>
       </div>
-      <div className={`w-full flex flex-col px-8 sm:px-12 gap-8`}>
-        <div className={`flex justify-between items-center w-full`}>
-          <h2 className={`text-2xl font-semibold`}>Refined Categories</h2>
-          <button
-            className={`flex justify-center items-center gap-2 group cursor-pointer`}
-          >
-            View All
-            <ArrowRight
-              size={16}
-              className={`group-hover:translate-x-1 duration-200`}
-            />
-          </button>
-        </div>
-        <div className={`sm:flex gap-4 w-full grid grid-cols-2 grid-rows-2`}>
-          <CategoryCard
-            title={"Spa"}
-            icon={
-              <div className={`bg-emerald-300 text-emerald-900 p-2`}>
-                <Flower />
-              </div>
-            }
-            locationCount={124}
-          />
-          <CategoryCard
-            title={"Hair Salon"}
-            icon={
-              <div className={`bg-lime-300 text-lime-900 p-2`}>
-                <Scissors />
-              </div>
-            }
-            locationCount={124}
-          />
-          <CategoryCard
-            title={"Spa"}
-            icon={
-              <div className={`bg-orange-300 text-orange-900 p-2`}>
-                <Wrench />
-              </div>
-            }
-            locationCount={124}
-          />
-          <CategoryCard
-            title={"Spa"}
-            icon={
-              <div className={`bg-emerald-300 text-emerald-900 p-2`}>
-                <Smile />
-              </div>
-            }
-            locationCount={124}
-          />
-        </div>
-      </div>
-      <div className={`rounded-3xl bg-teal-200/80 px-8 sm:px-12 py-16`}>
-        <div className={`w-1/2 flex flex-col gap-4`}>
-          <h2 className={`text-3xl sm:text-4xl font-semibold text-teal-950`}>
-            Join a community of informed locals.
-          </h2>
-          <p>
-            Thousands of successful bookings managed this week. Trust the
-            collective wisdom of your neighbors.
-          </p>
-          <div className={`font-semibold text-sm text-teal-950`}>
-            12k+ Active Users this month
-          </div>
-        </div>
-      </div>
-      <div className={`w-1/2`}></div>
-    </div>
-  );
-};
-
-interface CategoryCardProps {
-  icon: JSX.Element;
-  title: string;
-  locationCount: number;
-}
-
-const CategoryCard: FC<CategoryCardProps> = ({
-  icon,
-  title,
-  locationCount,
-}: CategoryCardProps): JSX.Element => {
-  return (
-    <div
-      className={`bg-teal-200/60 p-4 sm:p-6 rounded-lg grow flex flex-col gap-1 grid-cols-1 hover:bg-primary-100 hover:ring ring-teal-200 duration-200 group cursor-default`}
-    >
-      <div
-        className={`rounded-lg w-fit overflow-hidden group-hover:scale-105 duration-200`}
-      >
-        {icon}
-      </div>
-      <h3 className={`font-semibold text-teal-950`}>{title}</h3>
-      <p className={`text-sm`}>
-        {locationCount} {locationCount === 1 ? <>location</> : <>locations</>}
-      </p>
-    </div>
+    </section>
   );
 };
 

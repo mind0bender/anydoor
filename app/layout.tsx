@@ -3,6 +3,7 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { FavoritesProvider } from "@/components/FavoritesProvider";
 
 const manropeSans = Manrope({
   variable: "--font-manrope-sans",
@@ -24,9 +25,11 @@ export default function RootLayout({
       <body
         className={`flex flex-col w-full min-h-screen bg-primary-200 text-primary font-sans ${manropeSans.variable} antialiased selection:bg-emerald-300`}
       >
-        <Navbar />
-        <main className={`flex grow`}>{children}</main>
-        <Footer />
+        <FavoritesProvider>
+          <Navbar />
+          <main className={`flex grow`}>{children}</main>
+          <Footer />
+        </FavoritesProvider>
       </body>
     </html>
   );
