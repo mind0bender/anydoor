@@ -32,6 +32,7 @@ const getFavoriteKey = (selection: FavoriteSelection): string => `${selection.ca
 
 export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const [favorites, setFavorites] = useState<FavoriteSelection[]>([]);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -41,11 +42,13 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     try {
       const raw = window.localStorage.getItem(FAVORITES_STORAGE_KEY);
       if (!raw) {
+        setIsHydrated(true);
         return;
       }
 
       const parsed = JSON.parse(raw) as unknown;
       if (!Array.isArray(parsed)) {
+        setIsHydrated(true);
         return;
       }
 
@@ -53,16 +56,18 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
       setFavorites(normalized);
     } catch {
       // Ignore malformed local storage payloads.
+    } finally {
+      setIsHydrated(true);
     }
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
+    if (typeof window === "undefined" || !isHydrated) {
       return;
     }
 
     window.localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
-  }, [favorites]);
+  }, [favorites, isHydrated]);
 
   const isFavorite = useCallback(
     (selection: FavoriteSelection) => favorites.some((item) => getFavoriteKey(item) === getFavoriteKey(selection)),

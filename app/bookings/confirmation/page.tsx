@@ -16,6 +16,12 @@ export default async function BookingConfirmationPage({ searchParams }: Confirma
   const booking = await resolveBookingDetails(searchParams);
   const searchParamsObject = searchParams instanceof Promise ? await searchParams : searchParams;
   const guest = createGuestDetails(searchParamsObject);
+  const paymentId = Array.isArray(searchParamsObject?.paymentId)
+    ? searchParamsObject?.paymentId[0]
+    : searchParamsObject?.paymentId;
+  const emailStatus = Array.isArray(searchParamsObject?.emailStatus)
+    ? searchParamsObject?.emailStatus[0]
+    : searchParamsObject?.emailStatus;
   const total = Number((booking.price + booking.price * 0.085).toFixed(2));
   const bookingQuery = buildBookingSearchParams(booking);
 
@@ -54,12 +60,43 @@ export default async function BookingConfirmationPage({ searchParams }: Confirma
               </div>
             )}
 
+            {paymentId && (
+              <div className="max-w-2xl rounded-2xl bg-white/85 p-4 border border-white/70 shadow-sm">
+                <p className="text-[11px] uppercase tracking-wide text-[#1e5a52] font-semibold">Payment reference</p>
+                <p className="mt-1 font-semibold text-[#003531] break-all">{paymentId}</p>
+              </div>
+            )}
+
+            {emailStatus && (
+              <div
+                className={`max-w-2xl rounded-2xl p-4 border ${
+                  emailStatus === "sent"
+                    ? "bg-green-50 border-green-200"
+                    : "bg-yellow-50 border-yellow-200"
+                }`}
+              >
+                <p className={`text-sm ${emailStatus === "sent" ? "text-green-700" : "text-yellow-700"}`}>
+                  {emailStatus === "sent"
+                    ? "✓ Confirmation email sent successfully. Check your inbox for details."
+                    : emailStatus === "unavailable"
+                      ? "Email confirmation is not configured yet, but your booking is confirmed."
+                      : "Email confirmation could not be sent, but your booking is confirmed."}
+                </p>
+              </div>
+            )}
+
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Link
                 href={`/bookings?${bookingQuery}`}
                 className="rounded-full bg-white text-[#0b6b5d] px-5 py-3 font-semibold shadow-sm border border-white/70 hover:bg-white/90 transition"
               >
                 Review Booking
+              </Link>
+              <Link
+                href="/bookings/history"
+                className="rounded-full bg-white text-[#0b6b5d] px-5 py-3 font-semibold shadow-sm border border-white/70 hover:bg-white/90 transition"
+              >
+                Payment History
               </Link>
               <Link
                 href="/discover"

@@ -1,4 +1,5 @@
 import { Services } from "@/types/service";
+import Image from "next/image";
 import { FC, JSX } from "react";
 
 interface ServiceCardProps {
@@ -19,11 +20,12 @@ const ServiceCard: FC<ServiceCardProps> = ({
   return (
     <div className={`rounded-2xl border border-primary-100 bg-white/80 p-4 flex flex-col gap-3 shadow-sm`}>
       <div className={`flex items-center gap-3`}>
-        <img
+        <Image
           src={profilePicture}
           alt={`${title} profile`}
           className={`w-12 h-12 rounded-full object-cover border border-primary-100`}
-          loading="lazy"
+          width={48}
+          height={48}
         />
         <div className={`flex flex-col`}> 
           <span className={`font-semibold text-primary`}>{title}</span>

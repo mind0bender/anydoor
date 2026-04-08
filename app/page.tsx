@@ -1,5 +1,4 @@
 import HomeHero from "@/components/HomeHero";
-import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { JSX, ReactNode } from "react";
@@ -261,7 +260,13 @@ interface AvatarProps {
 const Avatar = ({ src }: AvatarProps): JSX.Element => {
   return (
     <div className={`w-11 h-11 rounded-full overflow-hidden border-4 border-[#c9f0e8]`}> 
-      <img src={src} alt="User avatar" className={`w-full h-full object-cover`} loading="lazy" />
+      <Image
+        src={src}
+        alt="User avatar"
+        width={44}
+        height={44}
+        className={`w-full h-full object-cover`}
+      />
     </div>
   );
 };
