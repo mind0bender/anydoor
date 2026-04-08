@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Mirrors the client's ₹/₹₹/₹₹₹/₹₹₹₹ price tier UI values.
+enum PriceTier {
+  /// ₹ (budget)
+  INR_1
+  /// ₹₹ (mid-range)
+  INR_2
+  /// ₹₹₹ (premium)
+  INR_3
+  /// ₹₹₹₹ (luxury)
+  INR_4
+}
+
+/// Lifecycle state for a booking.
+enum BookingStatus {
+  /// Slot is created but not yet confirmed.
+  PENDING
+  /// Payment/verification succeeded and booking is confirmed.
+  CONFIRMED
+  /// Booking was cancelled by user or business.
+  CANCELLED
+  /// Service has been delivered.
+  COMPLETED
+}
+
+/// Top-level service category shown in discover pages (spa, hair-salon, etc.).
+model Category {
+  /// Internal primary key for relational use.
+  id        String    @id @default(cuid())
+  /// URL-friendly category identifier (e.g. "spa").
+  slug      String    @unique
+  /// Display title shown in the UI (e.g. "Downtown Spas").
+  title     String
+  /// Marketing subtitle/tagline for the category card.
+  tagline   String
+  /// Precomputed listing count shown in the category header.
+  total     Int
+  /// One-to-many relation: a category has many listings.
+  listings  Listing[]
+  /// Timestamp when the category row was created.
+  createdAt DateTime  @default(now())
+  /// Auto-updated timestamp on every category update.
+  updatedAt DateTime  @updatedAt
+}
+
+/// Bookable company/profile entry rendered inside a category.
+model Listing {
+  /// Stable listing identifier (kept as string to match existing client IDs).
+  id           String    @id
+  /// Foreign key reference to owning category.
+  categoryId   String
+  /// Relation object back to category.
+  category     Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  /// Business/listing name shown to users.
+  name         String
+  /// Sub-area/locale label used in cards.
+  address      String
+  /// Average rating value used for sorting/display.
+  rating       Float     @default(4.5)
+  /// Price band bucket used by the UI.
+  priceTier    PriceTier
+  /// Lowest advertised starting price for this listing.
+  startingFrom Int
+  /// Primary image URL for cards/profile hero.
+  image        String
+  /// Optional descriptive tags/chips attached to the listing.
+  tags         String[]
+  /// One-to-many relation: listing has many bookings.
+  bookings     Booking[]
+  /// Timestamp when the listing row was created.
+  createdAt    DateTime  @default(now())
+  /// Auto-updated timestamp on listing changes.
+  updatedAt    DateTime  @updatedAt
+
+  /// Speeds up lookups of listings by category.
+  @@index([categoryId])
+}
+
+/// Captures a user booking request plus guest details.
+model Booking {
+  /// Internal booking identifier.
+  id         String        @id @default(cuid())
+  /// Foreign key to the listing being booked.
+  listingId  String
+  /// Relation object to the listing.
+  listing    Listing       @relation(fields: [listingId], references: [id], onDelete: Restrict)
+  /// Category label at time of booking (denormalized snapshot).
+  category   String
+  /// Company/listing name snapshot at time of booking.
+  company    String
+  /// Selected service name snapshot.
+  service    String
+  /// Selected service price (decimal currency value).
+  price      Decimal       @db.Decimal(10, 2)
+  /// Service duration in minutes.
+  duration   Int
+  /// Selected staff member name.
+  staff      String
+  /// Human-readable date label used in UI/query params.
+  dateLabel  String
+  /// Human-readable time-slot label used in UI/query params.
+  timeLabel  String
+  /// Snapshot of listing image used during checkout/history.
+  image      String
+  /// Guest full name.
+  guestName  String
+  /// Guest email used for communication and receipt lookup.
+  guestEmail String
+  /// Optional guest phone number.
+  guestPhone String?
+  /// Optional guest notes/special instructions.
+  guestNotes String?
+  /// Current booking lifecycle status.
+  status     BookingStatus @default(PENDING)
+  /// Optional one-to-one payment relation once paid.
+  payment    Payment?
+  /// Timestamp when booking was created.
+  createdAt  DateTime      @default(now())
+  /// Auto-updated timestamp on booking edits.
+  updatedAt  DateTime      @updatedAt
+
+  /// Speeds up booking retrieval by listing.
+  @@index([listingId])
+  /// Speeds up booking retrieval by guest email.
+  @@index([guestEmail])
+}
+
+/// Razorpay payment record associated with a booking.
+model Payment {
+  /// Internal payment-row identifier.
+  id        String    @id @default(cuid())
+  /// Foreign key to booking (one payment per booking).
+  bookingId String    @unique
+  /// Relation object to booking.
+  booking   Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  /// Razorpay payment ID returned after successful charge.
+  paymentId String    @unique
+  /// Razorpay order ID created before checkout.
+  orderId   String    @unique
+  /// Razorpay signature hash used for verification.
+  signature String
+  /// Charged amount in the smallest currency unit (rupees).
+  amount    Int
+  /// Optional settlement/payment completion timestamp.
+  paidAt    DateTime?
+  /// Timestamp when payment row was created.
+  createdAt DateTime  @default(now())
+
+  /// Speeds up chronological payment-history queries.
+  @@index([createdAt])
+}

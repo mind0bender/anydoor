@@ -13,16 +13,25 @@ export function generateStaticParams() {
   return categorySlugs.map((slug) => ({ category: slug }));
 }
 
-const DiscoverCategoryPage = async ({ params, searchParams }: PageProps) => {
+const DiscoverCategoryPage = async ({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ category: string }> | { category: string };
+  searchParams?: Promise<{ view?: string | string[] }>;
+}) => {
   const resolved = params instanceof Promise ? await params : params;
   const category = getCategoryBySlug(resolved.category);
   if (!category) {
     notFound();
   }
 
-  const viewParam = Array.isArray(searchParams?.view)
-    ? searchParams?.view[0]
-    : searchParams?.view;
+  const searchParamsResolved =
+    searchParams instanceof Promise ? await searchParams : searchParams;
+
+  const viewParam = Array.isArray(searchParamsResolved?.view)
+    ? searchParamsResolved.view[0]
+    : searchParamsResolved?.view;
   const initialView: ViewMode = viewParam === "list" ? "list" : "grid";
 
   return (
