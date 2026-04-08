@@ -1,13 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CalendarDays, Clock3, Leaf, Lock, UserRound, Users } from "lucide-react";
-import { buildBookingSearchParams, resolveBookingDetails, type BookingSearchParams } from "@/types/booking";
+import {
+  CalendarDays,
+  Clock3,
+  Leaf,
+  Lock,
+  UserRound,
+  Users,
+} from "lucide-react";
+import {
+  buildBookingSearchParams,
+  resolveBookingDetails,
+  type BookingSearchParams,
+} from "@/types/booking";
 
 interface BookingsPageProps {
   searchParams?: BookingSearchParams | Promise<BookingSearchParams>;
 }
 
-export default async function BookingsPage({ searchParams }: BookingsPageProps) {
+export default async function BookingsPage({
+  searchParams,
+}: BookingsPageProps) {
   const booking = await resolveBookingDetails(searchParams);
   const bookingQuery = buildBookingSearchParams(booking);
 
@@ -15,12 +28,14 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
   const total = Number((booking.price + tax).toFixed(2));
 
   return (
-    <section className="w-full bg-[#d5fff9] text-[#003531]">
-      <div className="w-full max-w-[1300px] mx-auto px-4 sm:px-8 py-10 lg:py-12 grid lg:grid-cols-12 gap-8">
+    <section className="w-full bg-primary-200 text-[#003531]">
+      <div className="w-full max-w-325 mx-auto px-4 sm:px-8 py-10 lg:py-12 grid lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 space-y-8">
           <header>
             <h1 className="text-4xl font-bold">Checkout</h1>
-            <p className="mt-2 text-[#1e5a52]">Finalize your curated experience in four simple steps.</p>
+            <p className="mt-2 text-[#1e5a52]">
+              Finalize your curated experience in four simple steps.
+            </p>
           </header>
 
           <div className="flex items-center gap-3 sm:gap-5 text-sm sm:text-base">
@@ -36,7 +51,7 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
           <article className="rounded-3xl bg-[#b3efe5] p-5 sm:p-6">
             <h2 className="text-2xl font-semibold mb-5">Selected Service</h2>
             <div className="flex flex-col sm:flex-row gap-4 sm:items-start">
-              <div className="relative w-full sm:w-56 aspect-[16/10] rounded-2xl overflow-hidden">
+              <div className="relative w-full sm:w-56 aspect-16/10 rounded-2xl overflow-hidden">
                 <Image
                   src={booking.image}
                   alt={booking.service}
@@ -46,16 +61,27 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
               </div>
               <div className="flex-1">
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className="text-xl font-semibold leading-tight">{booking.service}</h3>
-                  <p className="font-semibold text-lg">${booking.price.toFixed(2)}</p>
+                  <h3 className="text-xl font-semibold leading-tight">
+                    {booking.service}
+                  </h3>
+                  <p className="font-semibold text-lg">
+                    ${booking.price.toFixed(2)}
+                  </p>
                 </div>
                 <p className="mt-2 text-sm text-[#1e5a52]">
-                  A deep-cleansing treatment designed for lasting glow and calm at {booking.company}.
+                  A deep-cleansing treatment designed for lasting glow and calm
+                  at {booking.company}.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-4 text-sm font-medium text-[#0b6b5d]">
-                  <span className="inline-flex items-center gap-2"><Clock3 size={14} /> {booking.duration} Minutes</span>
-                  <span className="inline-flex items-center gap-2"><UserRound size={14} /> with {booking.staff}</span>
-                  <span className="inline-flex items-center gap-2"><Leaf size={14} /> {booking.category}</span>
+                  <span className="inline-flex items-center gap-2">
+                    <Clock3 size={14} /> {booking.duration} Minutes
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <UserRound size={14} /> with {booking.staff}
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <Leaf size={14} /> {booking.category}
+                  </span>
                 </div>
               </div>
             </div>
@@ -69,7 +95,9 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
                   <CalendarDays size={18} className="text-[#0b6b5d]" />
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-[#1e5a52] font-semibold">Date</p>
+                  <p className="text-xs uppercase tracking-wide text-[#1e5a52] font-semibold">
+                    Date
+                  </p>
                   <p className="font-semibold">{booking.date}</p>
                 </div>
               </div>
@@ -78,12 +106,16 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
                   <Clock3 size={18} className="text-[#0b6b5d]" />
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-[#1e5a52] font-semibold">Time</p>
+                  <p className="text-xs uppercase tracking-wide text-[#1e5a52] font-semibold">
+                    Time
+                  </p>
                   <p className="font-semibold">{booking.time}</p>
                 </div>
               </div>
             </div>
-            <button className="mt-4 text-sm text-[#0b6b5d] font-semibold hover:underline">Change Date or Time</button>
+            <button className="mt-4 text-sm text-[#0b6b5d] font-semibold hover:underline">
+              Change Date or Time
+            </button>
           </article>
 
           <div className="pt-2">
@@ -104,16 +136,35 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
             </div>
 
             <div className="space-y-5 text-sm text-[#1e5a52]">
-              <StepRow icon={<Leaf size={16} />} step="Step 1" label="Services" active />
-              <StepRow icon={<Users size={16} />} step="Step 2" label="Guest Details" />
-              <StepRow icon={<CalendarDays size={16} />} step="Step 3" label="Payment" />
-              <StepRow icon={<Clock3 size={16} />} step="Step 4" label="Confirmation" />
+              <StepRow
+                icon={<Leaf size={16} />}
+                step="Step 1"
+                label="Services"
+                active
+              />
+              <StepRow
+                icon={<Users size={16} />}
+                step="Step 2"
+                label="Guest Details"
+              />
+              <StepRow
+                icon={<CalendarDays size={16} />}
+                step="Step 3"
+                label="Payment"
+              />
+              <StepRow
+                icon={<Clock3 size={16} />}
+                step="Step 4"
+                label="Confirmation"
+              />
             </div>
 
             <div className="border-t border-[#8ccfc2] pt-4 space-y-3 text-sm">
               <div className="flex items-center justify-between">
                 <span>Subtotal</span>
-                <span className="font-semibold">${booking.price.toFixed(2)}</span>
+                <span className="font-semibold">
+                  ${booking.price.toFixed(2)}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Tax</span>
@@ -125,7 +176,10 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
               </div>
             </div>
 
-            <Link href={`/bookings/guest-details?${bookingQuery}`} className="w-full rounded-full bg-[#b24e07] text-white py-3.5 font-semibold hover:opacity-90 transition inline-flex items-center justify-center">
+            <Link
+              href={`/bookings/guest-details?${bookingQuery}`}
+              className="w-full rounded-full bg-[#b24e07] text-white py-3.5 font-semibold hover:opacity-90 transition inline-flex items-center justify-center"
+            >
               Continue
             </Link>
             <div className="text-center text-xs text-[#1e5a52] font-semibold inline-flex items-center justify-center gap-2 w-full">

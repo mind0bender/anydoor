@@ -1,4 +1,7 @@
-import { PAYMENT_HISTORY_STORAGE_KEY, type PaymentHistoryEntry, type PaymentSnapshot } from "@/types/payment";
+import {
+  type PaymentHistoryEntry,
+  type PaymentSnapshot,
+} from "@/types/payment";
 
 const COOKIE_NAME = "anydoor_payment_history";
 const COOKIE_MAX_AGE = 365 * 24 * 60 * 60; // 1 year in seconds
@@ -52,11 +55,11 @@ export const getPaymentHistory = (): PaymentHistoryEntry[] => {
       const record = item as PaymentHistoryEntry;
       return Boolean(
         record &&
-          typeof record.id === "string" &&
-          typeof record.paymentId === "string" &&
-          typeof record.orderId === "string" &&
-          typeof record.company === "string" &&
-          typeof record.service === "string"
+        typeof record.id === "string" &&
+        typeof record.paymentId === "string" &&
+        typeof record.orderId === "string" &&
+        typeof record.company === "string" &&
+        typeof record.service === "string",
       );
     });
   } catch {
@@ -64,7 +67,9 @@ export const getPaymentHistory = (): PaymentHistoryEntry[] => {
   }
 };
 
-export const savePaymentHistoryEntry = (snapshot: PaymentSnapshot): PaymentHistoryEntry | null => {
+export const savePaymentHistoryEntry = (
+  snapshot: PaymentSnapshot,
+): PaymentHistoryEntry | null => {
   if (typeof window === "undefined") {
     return null;
   }
@@ -92,7 +97,10 @@ export const savePaymentHistoryEntry = (snapshot: PaymentSnapshot): PaymentHisto
 
   try {
     const current = getPaymentHistory();
-    const next = [entry, ...current.filter((item) => item.paymentId !== entry.paymentId)];
+    const next = [
+      entry,
+      ...current.filter((item) => item.paymentId !== entry.paymentId),
+    ];
     setCookieValue(COOKIE_NAME, JSON.stringify(next), COOKIE_MAX_AGE);
     return entry;
   } catch {

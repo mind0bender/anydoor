@@ -80,8 +80,14 @@ export default function PaymentClient({ booking, guest }: PaymentClientProps) {
   const [error, setError] = useState<string | null>(null);
   const [confirmationNote, setConfirmationNote] = useState<string | null>(null);
 
-  const bookingQuery = useMemo(() => buildBookingSearchParams(booking), [booking]);
-  const guestQuery = useMemo(() => buildGuestDetailsSearchParams(guest), [guest]);
+  const bookingQuery = useMemo(
+    () => buildBookingSearchParams(booking),
+    [booking],
+  );
+  const guestQuery = useMemo(
+    () => buildGuestDetailsSearchParams(guest),
+    [guest],
+  );
   const tax = Number((booking.price * 0.085).toFixed(2));
   const total = Number((booking.price + tax).toFixed(2));
 
@@ -97,7 +103,9 @@ export default function PaymentClient({ booking, guest }: PaymentClientProps) {
     try {
       const sdkLoaded = await loadRazorpayCheckout();
       if (!sdkLoaded || !window.Razorpay) {
-        setError("Unable to load Razorpay checkout. Please check your connection and try again.");
+        setError(
+          "Unable to load Razorpay checkout. Please check your connection and try again.",
+        );
         return;
       }
 
@@ -126,7 +134,11 @@ export default function PaymentClient({ booking, guest }: PaymentClientProps) {
           };
 
       if (!orderResponse.ok || !orderPayload.success) {
-        setError(orderPayload.success ? "Unable to start payment." : orderPayload.message);
+        setError(
+          orderPayload.success
+            ? "Unable to start payment."
+            : orderPayload.message,
+        );
         return;
       }
 
@@ -171,7 +183,11 @@ export default function PaymentClient({ booking, guest }: PaymentClientProps) {
             | { success: false; message: string };
 
           if (!verificationResponse.ok || !verificationPayload.success) {
-            setError(verificationPayload.success ? "Payment verification failed." : verificationPayload.message);
+            setError(
+              verificationPayload.success
+                ? "Payment verification failed."
+                : verificationPayload.message,
+            );
             setIsProcessing(false);
             return;
           }
@@ -195,41 +211,56 @@ export default function PaymentClient({ booking, guest }: PaymentClientProps) {
           let emailStatus = "sent";
 
           try {
-            const emailResponse = await fetch("/api/notifications/send-confirmation", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
+            const emailResponse = await fetch(
+              "/api/notifications/send-confirmation",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  booking,
+                  guest,
+                  paymentId: response.razorpay_payment_id,
+                  orderId: response.razorpay_order_id,
+                  amount: orderPayload.amount / 100,
+                  currency: orderPayload.currency,
+                }),
               },
-              body: JSON.stringify({
-                booking,
-                guest,
-                paymentId: response.razorpay_payment_id,
-                orderId: response.razorpay_order_id,
-                amount: orderPayload.amount / 100,
-                currency: orderPayload.currency,
-              }),
-            });
+            );
 
             if (!emailResponse.ok) {
-              const emailPayload = (await emailResponse.json()) as { message?: string };
-              emailStatus = emailResponse.status === 501 ? "unavailable" : "failed";
-              setConfirmationNote(emailPayload.message ?? "Payment saved, but email confirmation is not configured yet.");
+              const emailPayload = (await emailResponse.json()) as {
+                message?: string;
+              };
+              emailStatus =
+                emailResponse.status === 501 ? "unavailable" : "failed";
+              setConfirmationNote(
+                emailPayload.message ??
+                  "Payment saved, but email confirmation is not configured yet.",
+              );
             }
           } catch {
             emailStatus = "failed";
-            setConfirmationNote("Payment saved, but email confirmation could not be sent right now.");
+            setConfirmationNote(
+              "Payment saved, but email confirmation could not be sent right now.",
+            );
           }
 
           const emailMeta = new URLSearchParams({
             emailStatus,
           }).toString();
 
-          router.push(`/bookings/confirmation?${bookingQuery}&${guestQuery}&${paymentMeta}&${emailMeta}`);
+          router.push(
+            `/bookings/confirmation?${bookingQuery}&${guestQuery}&${paymentMeta}&${emailMeta}`,
+          );
         },
       });
 
       checkout.on("payment.failed", () => {
-        setError("Payment failed or was cancelled. You can retry using UPI, card, or net banking.");
+        setError(
+          "Payment failed or was cancelled. You can retry using UPI, card, or net banking.",
+        );
         setIsProcessing(false);
       });
 
@@ -242,26 +273,47 @@ export default function PaymentClient({ booking, guest }: PaymentClientProps) {
   };
 
   return (
-    <section className="w-full bg-[#d5fff9] text-[#003531]">
+    <section className="w-full bg-primary-200 text-[#003531]">
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-8 py-10 lg:py-12 grid lg:grid-cols-[1.15fr_0.85fr] gap-8">
         <div className="space-y-6">
           <header className="space-y-3">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/80 border border-white/70 px-4 py-2 text-sm font-semibold text-[#0b6b5d] shadow-sm">
               <Lock size={16} /> Step 3 · Secure payment
             </div>
-            <h1 className="text-4xl font-bold">Complete your booking payment</h1>
+            <h1 className="text-4xl font-bold">
+              Complete your booking payment
+            </h1>
             <p className="text-[#1e5a52]">
-              We request UPI, card, and net banking in checkout. Google Pay appears within supported UPI flows.
+              We request UPI, card, and net banking in checkout. Google Pay
+              appears within supported UPI flows.
             </p>
           </header>
 
           <div className="rounded-3xl bg-[#b3efe5] p-5 sm:p-6 space-y-4">
-            <h2 className="text-2xl font-semibold">Supported payment methods</h2>
+            <h2 className="text-2xl font-semibold">
+              Supported payment methods
+            </h2>
             <div className="grid sm:grid-cols-2 gap-3">
-              <MethodCard icon={<Smartphone size={18} />} label="UPI" description="Pay via UPI apps" />
-              <MethodCard icon={<Smartphone size={18} />} label="Google Pay" description="Shown through UPI intent" />
-              <MethodCard icon={<CreditCard size={18} />} label="Card" description="Credit and debit cards" />
-              <MethodCard icon={<Landmark size={18} />} label="Net Banking" description="Major Indian banks" />
+              <MethodCard
+                icon={<Smartphone size={18} />}
+                label="UPI"
+                description="Pay via UPI apps"
+              />
+              <MethodCard
+                icon={<Smartphone size={18} />}
+                label="Google Pay"
+                description="Shown through UPI intent"
+              />
+              <MethodCard
+                icon={<CreditCard size={18} />}
+                label="Card"
+                description="Credit and debit cards"
+              />
+              <MethodCard
+                icon={<Landmark size={18} />}
+                label="Net Banking"
+                description="Major Indian banks"
+              />
             </div>
 
             <div className="flex flex-wrap gap-3 pt-2">
@@ -282,7 +334,9 @@ export default function PaymentClient({ booking, guest }: PaymentClientProps) {
             </div>
 
             {error && (
-              <p className="text-sm rounded-xl bg-red-50 text-red-700 px-4 py-3 border border-red-200">{error}</p>
+              <p className="text-sm rounded-xl bg-red-50 text-red-700 px-4 py-3 border border-red-200">
+                {error}
+              </p>
             )}
 
             {confirmationNote && (
@@ -303,7 +357,10 @@ export default function PaymentClient({ booking, guest }: PaymentClientProps) {
           </div>
 
           <div className="border-t border-[#8ccfc2] pt-4 space-y-2 text-sm">
-            <SummaryRow label="Subtotal" value={`$${booking.price.toFixed(2)}`} />
+            <SummaryRow
+              label="Subtotal"
+              value={`$${booking.price.toFixed(2)}`}
+            />
             <SummaryRow label="Tax" value={`$${tax.toFixed(2)}`} />
             <div className="flex items-center justify-between text-lg font-bold pt-1">
               <span>Total</span>

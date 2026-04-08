@@ -1,37 +1,52 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
-const FAVORITES_STORAGE_KEY = "anydoor:favorites";
+const FAVOURITES_STORAGE_KEY = "anydoor:favourites";
 
-export interface FavoriteSelection {
+export interface FavouriteSelection {
   listingId: string;
   categorySlug: string;
 }
 
-interface FavoritesContextValue {
-  favorites: FavoriteSelection[];
-  favoriteCount: number;
-  isFavorite: (selection: FavoriteSelection) => boolean;
-  toggleFavorite: (selection: FavoriteSelection) => void;
-  clearFavorites: () => void;
+interface FavouritesContextValue {
+  favourites: FavouriteSelection[];
+  favouriteCount: number;
+  isFavourite: (selection: FavouriteSelection) => boolean;
+  toggleFavourite: (selection: FavouriteSelection) => void;
+  clearFavourites: () => void;
 }
 
-const FavoritesContext = createContext<FavoritesContextValue | null>(null);
+const FavouritesContext = createContext<FavouritesContextValue | null>(null);
 
-const isFavoriteSelection = (value: unknown): value is FavoriteSelection => {
+const isFavouriteSelection = (value: unknown): value is FavouriteSelection => {
   if (!value || typeof value !== "object") {
     return false;
   }
 
   const record = value as Record<string, unknown>;
-  return typeof record.listingId === "string" && typeof record.categorySlug === "string";
+  return (
+    typeof record.listingId === "string" &&
+    typeof record.categorySlug === "string"
+  );
 };
 
-const getFavoriteKey = (selection: FavoriteSelection): string => `${selection.categorySlug}:${selection.listingId}`;
+const getFavouriteKey = (selection: FavouriteSelection): string =>
+  `${selection.categorySlug}:${selection.listingId}`;
 
-export function FavoritesProvider({ children }: { children: React.ReactNode }) {
-  const [favorites, setFavorites] = useState<FavoriteSelection[]>([]);
+export default function FavouritesProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [favourites, setFavourites] = useState<FavouriteSelection[]>([]);
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
@@ -40,7 +55,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      const raw = window.localStorage.getItem(FAVORITES_STORAGE_KEY);
+      const raw = window.localStorage.getItem(FAVOURITES_STORAGE_KEY);
       if (!raw) {
         setIsHydrated(true);
         return;
@@ -52,8 +67,8 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      const normalized = parsed.filter(isFavoriteSelection);
-      setFavorites(normalized);
+      const normalized = parsed.filter(isFavouriteSelection);
+      setFavourites(normalized);
     } catch {
       // Ignore malformed local storage payloads.
     } finally {
@@ -66,47 +81,61 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    window.localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
-  }, [favorites, isHydrated]);
+    window.localStorage.setItem(
+      FAVOURITES_STORAGE_KEY,
+      JSON.stringify(favourites),
+    );
+  }, [favourites, isHydrated]);
 
-  const isFavorite = useCallback(
-    (selection: FavoriteSelection) => favorites.some((item) => getFavoriteKey(item) === getFavoriteKey(selection)),
-    [favorites]
+  const isFavourite = useCallback(
+    (selection: FavouriteSelection) =>
+      favourites.some(
+        (item) => getFavouriteKey(item) === getFavouriteKey(selection),
+      ),
+    [favourites],
   );
 
-  const toggleFavorite = useCallback((selection: FavoriteSelection) => {
-    setFavorites((current) => {
-      const exists = current.some((item) => getFavoriteKey(item) === getFavoriteKey(selection));
+  const toggleFavourite = useCallback((selection: FavouriteSelection) => {
+    setFavourites((current) => {
+      const exists = current.some(
+        (item) => getFavouriteKey(item) === getFavouriteKey(selection),
+      );
       if (exists) {
-        return current.filter((item) => getFavoriteKey(item) !== getFavoriteKey(selection));
+        return current.filter(
+          (item) => getFavouriteKey(item) !== getFavouriteKey(selection),
+        );
       }
 
       return [...current, selection];
     });
   }, []);
 
-  const clearFavorites = useCallback(() => {
-    setFavorites([]);
+  const clearFavourites = useCallback(() => {
+    setFavourites([]);
   }, []);
 
-  const value = useMemo<FavoritesContextValue>(
+  const value = useMemo<FavouritesContextValue>(
     () => ({
-      favorites,
-      favoriteCount: favorites.length,
-      isFavorite,
-      toggleFavorite,
-      clearFavorites,
+      favourites,
+      favouriteCount: favourites.length,
+      isFavourite,
+      toggleFavourite,
+      clearFavourites,
     }),
-    [favorites, isFavorite, toggleFavorite, clearFavorites]
+    [favourites, isFavourite, toggleFavourite, clearFavourites],
   );
 
-  return <FavoritesContext.Provider value={value}>{children}</FavoritesContext.Provider>;
+  return (
+    <FavouritesContext.Provider value={value}>
+      {children}
+    </FavouritesContext.Provider>
+  );
 }
 
-export function useFavorites(): FavoritesContextValue {
-  const context = useContext(FavoritesContext);
+export function useFavourites(): FavouritesContextValue {
+  const context = useContext(FavouritesContext);
   if (!context) {
-    throw new Error("useFavorites must be used within a FavoritesProvider.");
+    throw new Error("useFavourites must be used within a FavouritesProvider.");
   }
 
   return context;

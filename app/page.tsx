@@ -9,7 +9,6 @@ import {
   Wrench,
   Smile,
   Star,
-  ShieldCheck,
   Clock3,
   CheckCircle2,
   BadgeCheck,
@@ -132,19 +131,26 @@ const proof: ProofItem[] = [
 
 const Home = (): JSX.Element => {
   return (
-    <main className={`w-full grow bg-[#d5fff9] text-[#003531]`}>
-      <div className={`w-full max-w-none px-5 sm:px-8 lg:px-12 xl:px-16 py-12 flex flex-col gap-16`}>
+    <main className={`w-full grow bg-primary-200 text-[#003531]`}>
+      <div
+        className={`w-full max-w-none px-5 sm:px-8 lg:px-12 xl:px-16 py-12 flex flex-col gap-16`}
+      >
         <HomeHero />
 
         <section className={`flex flex-col gap-6`}>
           <div className={`flex items-center justify-between`}>
-            <h2 className={`text-2xl sm:text-3xl font-semibold`}>Refined Categories</h2>
-            <Link href="/discover" className={`flex items-center gap-2 text-[#0b6b5d] font-semibold hover:gap-3 transition`}> 
+            <h2 className={`text-2xl sm:text-3xl font-semibold`}>
+              Refined Categories
+            </h2>
+            <Link
+              href="/discover"
+              className={`flex items-center gap-2 text-[#0b6b5d] font-semibold hover:gap-3 transition`}
+            >
               View all
               <ArrowRight size={16} />
             </Link>
           </div>
-          <div className={`grid grid-cols-2 md:grid-cols-4 gap-4`}> 
+          <div className={`grid grid-cols-2 md:grid-cols-4 gap-4`}>
             {categories.map((item) => (
               <CategoryCard key={item.title} category={item} />
             ))}
@@ -153,21 +159,30 @@ const Home = (): JSX.Element => {
 
         <section className={`flex flex-col gap-4`}>
           <div>
-            <h3 className={`text-3xl sm:text-4xl font-semibold`}>The Selection</h3>
-            <p className={`text-[#1e5a52]`}>Verified excellence from our most trusted partners.</p>
+            <h3 className={`text-3xl sm:text-4xl font-semibold`}>
+              The Selection
+            </h3>
+            <p className={`text-[#1e5a52]`}>
+              Verified excellence from our most trusted partners.
+            </p>
           </div>
-          <div className={`grid sm:grid-cols-2 lg:grid-cols-4 gap-6`}> 
+          <div className={`grid sm:grid-cols-2 lg:grid-cols-4 gap-6`}>
             {featured.map((biz) => (
               <FeaturedCard key={biz.name} business={biz} />
             ))}
           </div>
         </section>
 
-        <section className={`bg-[#c9f0e8] rounded-3xl p-8 sm:p-10 flex flex-col lg:flex-row gap-10 items-center`}> 
+        <section
+          className={`bg-[#c9f0e8] rounded-3xl p-8 sm:p-10 flex flex-col lg:flex-row gap-10 items-center`}
+        >
           <div className={`flex-1 flex flex-col gap-4`}>
-            <h4 className={`text-3xl sm:text-4xl font-semibold leading-tight`}>Join a community of informed locals.</h4>
+            <h4 className={`text-3xl sm:text-4xl font-semibold leading-tight`}>
+              Join a community of informed locals.
+            </h4>
             <p className={`text-[#1e5a52]`}>
-              Thousands of successful bookings managed this week. Trust the collective wisdom of your neighbors.
+              Thousands of successful bookings managed this week. Trust the
+              collective wisdom of your neighbors.
             </p>
             <div className={`flex items-center gap-4`}>
               <div className={`flex -space-x-3`}>
@@ -202,12 +217,20 @@ const CategoryCard = ({ category }: CategoryCardProps): JSX.Element => {
       href={`/discover/${slug}`}
       className={`group relative rounded-2xl px-4 py-5 sm:px-5 sm:py-6 bg-white/80 transition shadow-sm border border-white/60 block overflow-hidden hover:-translate-y-1 hover:shadow-lg`}
     >
-      <span className={`absolute inset-0 bg-gradient-to-br from-transparent via-white/40 to-white/10 opacity-0 group-hover:opacity-100 transition`} />
-      <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${tone}`}>
+      <span
+        className={`absolute inset-0 bg-linear-to-br from-transparent via-white/40 to-white/10 opacity-0 group-hover:opacity-100 transition`}
+      />
+      <div
+        className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${tone}`}
+      >
         {icon}
       </div>
       <div className={`font-semibold text-lg`}>{title}</div>
-      <div className={`text-sm text-[#1e5a52] group-hover:text-[#0b6b5d] transition`}>{locations} locations</div>
+      <div
+        className={`text-sm text-[#1e5a52] group-hover:text-[#0b6b5d] transition`}
+      >
+        {locations} locations
+      </div>
     </Link>
   );
 };
@@ -219,10 +242,20 @@ interface FeaturedCardProps {
 const FeaturedCard = ({ business }: FeaturedCardProps): JSX.Element => {
   const { name, description, rating, image, cta, href } = business;
   return (
-    <div className={`bg-white/90 rounded-3xl shadow-sm border border-white/60 overflow-hidden flex flex-col`}> 
+    <div
+      className={`bg-white/90 rounded-3xl shadow-sm border border-white/60 overflow-hidden flex flex-col`}
+    >
       <div className={`relative aspect-square overflow-hidden`}>
-        <Image src={image} alt={name} fill className={`object-cover hover:scale-105 transition`} sizes="(max-width: 768px) 100vw, 25vw" />
-        <div className={`absolute top-3 right-3 bg-white/90 backdrop-blur rounded-full px-3 py-1 text-sm font-semibold flex items-center gap-1 shadow-sm`}>
+        <Image
+          src={image}
+          alt={name}
+          fill
+          className={`object-cover hover:scale-105 transition`}
+          sizes="(max-width: 768px) 100vw, 25vw"
+        />
+        <div
+          className={`absolute top-3 right-3 bg-white/90 backdrop-blur rounded-full px-3 py-1 text-sm font-semibold flex items-center gap-1 shadow-sm`}
+        >
           <Star className={`text-[#f59e0b] fill-[#f59e0b]`} size={14} />
           {rating.toFixed(1)}
         </div>
@@ -230,7 +263,12 @@ const FeaturedCard = ({ business }: FeaturedCardProps): JSX.Element => {
       <div className={`p-4 flex flex-col gap-2 flex-1`}>
         <div className={`font-semibold text-lg`}>{name}</div>
         <div className={`text-sm text-[#1e5a52]`}>{description}</div>
-        <Link href={href} className={`mt-auto w-full rounded-full border border-[#0b6b5d] text-[#0b6b5d] font-semibold py-3 hover:bg-[#0b6b5d] hover:text-white transition inline-flex items-center justify-center`}>{cta}</Link>
+        <Link
+          href={href}
+          className={`mt-auto w-full rounded-full border border-[#0b6b5d] text-[#0b6b5d] font-semibold py-3 hover:bg-[#0b6b5d] hover:text-white transition inline-flex items-center justify-center`}
+        >
+          {cta}
+        </Link>
       </div>
     </div>
   );
@@ -243,9 +281,15 @@ interface ProofCardProps {
 const ProofCard = ({ item }: ProofCardProps): JSX.Element => {
   const { timeAgo, copy, icon, accent } = item;
   return (
-    <div className={`flex items-center gap-4 rounded-2xl ${accent} p-4 shadow-sm border border-white/60`}> 
-      <div className={`w-10 h-10 rounded-xl bg-white flex items-center justify-center`}>{icon}</div>
-      <div className={`flex flex-col gap-1`}> 
+    <div
+      className={`flex items-center gap-4 rounded-2xl ${accent} p-4 shadow-sm border border-white/60`}
+    >
+      <div
+        className={`w-10 h-10 rounded-xl bg-white flex items-center justify-center`}
+      >
+        {icon}
+      </div>
+      <div className={`flex flex-col gap-1`}>
         <span className={`text-xs text-[#1e5a52]`}>{timeAgo}</span>
         <span className={`text-sm font-medium text-[#0f372f]`}>{copy}</span>
       </div>
@@ -259,7 +303,9 @@ interface AvatarProps {
 
 const Avatar = ({ src }: AvatarProps): JSX.Element => {
   return (
-    <div className={`w-11 h-11 rounded-full overflow-hidden border-4 border-[#c9f0e8]`}> 
+    <div
+      className={`w-11 h-11 rounded-full overflow-hidden border-4 border-[#c9f0e8]`}
+    >
       <Image
         src={src}
         alt="User avatar"

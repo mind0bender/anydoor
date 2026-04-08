@@ -20,12 +20,16 @@ const DiscoverCategoryPage = async ({ params, searchParams }: PageProps) => {
     notFound();
   }
 
-  const viewParam = Array.isArray(searchParams?.view) ? searchParams?.view[0] : searchParams?.view;
+  const viewParam = Array.isArray(searchParams?.view)
+    ? searchParams?.view[0]
+    : searchParams?.view;
   const initialView: ViewMode = viewParam === "list" ? "list" : "grid";
 
   return (
-    <main className={`w-full min-h-screen bg-[#d5fff9] text-[#003531]`}>
-      <div className={`w-full max-w-none px-5 sm:px-8 lg:px-12 xl:px-16 py-10 flex flex-col gap-8`}>
+    <main className={`w-full min-h-screen bg-primary-200 text-[#003531]`}>
+      <div
+        className={`w-full max-w-none px-5 sm:px-8 lg:px-12 xl:px-16 py-10 flex flex-col gap-8`}
+      >
         <DiscoverClient
           category={{
             slug: category.slug,

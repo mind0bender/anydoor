@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { categories, Listing } from "../data";
+import { categories } from "../data";
 import CompanyProfile from "./CompanyProfile";
 
 interface PageProps {

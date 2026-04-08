@@ -3,9 +3,17 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Listing, CategoryDefinition, PriceTier } from "../data";
 import { FC, useState } from "react";
-import { ArrowLeft, ArrowRight, CalendarDays, Sparkles, Users, Clock3, Heart } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Sparkles,
+  Users,
+  Clock3,
+  Heart,
+} from "lucide-react";
 import { buildBookingSearchParams } from "@/types/booking";
-import { useFavorites } from "@/components/FavoritesProvider";
+import { useFavourites } from "@/components/FavoritesProvider";
 
 interface CompanyProfileProps {
   listing: Listing;
@@ -75,8 +83,11 @@ const priceTierLabel: Record<PriceTier, string> = {
 
 const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
   const router = useRouter();
-  const { isFavorite, toggleFavorite } = useFavorites();
-  const [booking, setBooking] = useState<BookingState>({ date: today, slot: afternoonSlots[0] });
+  const { isFavourite, toggleFavourite } = useFavourites();
+  const [booking, setBooking] = useState<BookingState>({
+    date: today,
+    slot: afternoonSlots[0],
+  });
   const [selectedImage, setSelectedImage] = useState<string>(listing.image);
   // Sidebar state
   const [tab, setTab] = useState<SidebarTab>("availability");
@@ -85,7 +96,8 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
   const [calendarYear, setCalendarYear] = useState<number>(2024);
 
   const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
-  const firstDayOffset = (new Date(calendarYear, calendarMonth, 1).getDay() + 6) % 7; // Monday = 0
+  const firstDayOffset =
+    (new Date(calendarYear, calendarMonth, 1).getDay() + 6) % 7; // Monday = 0
   const calendarCells: Array<number | null> = [
     ...Array.from({ length: firstDayOffset }, () => null),
     ...Array.from({ length: daysInMonth }, (_, index) => index + 1),
@@ -111,19 +123,26 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
     setCalendarMonth((month) => month + 1);
   };
   // selected service for UX + summary
-  const [selectedService, setSelectedService] = useState<ServiceOption>(services[0]);
-  const favoriteSelection = { listingId: listing.id, categorySlug: category.slug };
-  const favorite = isFavorite(favoriteSelection);
+  const [selectedService, setSelectedService] = useState<ServiceOption>(
+    services[0],
+  );
+  const favouriteSelection = {
+    listingId: listing.id,
+    categorySlug: category.slug,
+  };
+  const favourite = isFavourite(favouriteSelection);
   const reviews = [
     {
       name: "Elena S.",
-      avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAwarYn6RedGsH9-2X8U_dCd3Sr4v81RRuO0dHyQxfNaAw9NxEAq_UW63gzegPeeP7xAHr2C5hTo4q9a6eXa_oEgQcn83YSvMoUQ4_C4myZKqCb0FJvPmMvF7aMrGgT8LuPUoA2k9DGnsyhmnnZUut5cbVSYwHyBh4pm5P9YIapqG-vs9xiBVnfVfG5K3jMJWSiAnjtew-2nuboJC0Gtm0XMtmw3KkQ5gFJ6aeNtnNR0avawuffP2XnCsvIes4M5ocAvTLObEH2qxBo",
+      avatar:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuAwarYn6RedGsH9-2X8U_dCd3Sr4v81RRuO0dHyQxfNaAw9NxEAq_UW63gzegPeeP7xAHr2C5hTo4q9a6eXa_oEgQcn83YSvMoUQ4_C4myZKqCb0FJvPmMvF7aMrGgT8LuPUoA2k9DGnsyhmnnZUut5cbVSYwHyBh4pm5P9YIapqG-vs9xiBVnfVfG5K3jMJWSiAnjtew-2nuboJC0Gtm0XMtmw3KkQ5gFJ6aeNtnNR0avawuffP2XnCsvIes4M5ocAvTLObEH2qxBo",
       rating: 5,
       text: "The most peaceful 90 minutes of my year. The Silk Ritual is life-changing.",
     },
     {
       name: "Marcus L.",
-      avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDiicQ_kE1ZyCKjE3UZ6uBg7euBMdeA4qhOAyFADg-o_Sn6HFDnjAQtCPaDNxn2LQ4qsRsEDl1gDgPN3sJZLRmi1OAYs9krsTdxB3II8TzkES1FcLLf36kWKl7wN_ytnHKugtxDSJQK0JgS4GE-1PmEPcsXQ83eFp1lCWpJITV04E-YEyUDyuQbVtiJ_GbqG8jhvC5tWoyxw4uGaErhnP1BzKmhEpFkytZhYDkWknNyu45yuQO4UFwPdtI_vpll9R8BOAx8fQahoOce",
+      avatar:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDiicQ_kE1ZyCKjE3UZ6uBg7euBMdeA4qhOAyFADg-o_Sn6HFDnjAQtCPaDNxn2LQ4qsRsEDl1gDgPN3sJZLRmi1OAYs9krsTdxB3II8TzkES1FcLLf36kWKl7wN_ytnHKugtxDSJQK0JgS4GE-1PmEPcsXQ83eFp1lCWpJITV04E-YEyUDyuQbVtiJ_GbqG8jhvC5tWoyxw4uGaErhnP1BzKmhEpFkytZhYDkWknNyu45yuQO4UFwPdtI_vpll9R8BOAx8fQahoOce",
       rating: 5,
       text: "Incredible staff and impeccable design. Truly lives up to the 'Curated' name.",
     },
@@ -136,36 +155,59 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
   ];
 
   return (
-    <main className="px-4 sm:px-6 lg:px-8 py-8 lg:py-12 lg:pr-[30rem] xl:pr-[32rem]">
-      <div className="max-w-[1400px] w-full mx-auto grid lg:grid-cols-16 gap-8">
+    <main className="px-4 sm:px-6 lg:px-8 py-8 lg:py-12 lg:pr-120 xl:pr-128">
+      <div className="max-w-350 w-full mx-auto grid lg:grid-cols-16 gap-8">
         {/* Main content (left) */}
         <section className="lg:col-span-10 col-span-12 space-y-8">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#1e5a52]">
-            <span className="rounded-full bg-white/70 px-3 py-1">{category.title}</span>
-            <span className="rounded-full bg-white/70 px-3 py-1">{listing.neighborhood}</span>
-            <span className="rounded-full bg-white/70 px-3 py-1">{priceTierLabel[listing.priceTier]}</span>
-            <span className="rounded-full bg-white/70 px-3 py-1">★ {listing.rating.toFixed(1)}</span>
+            <span className="rounded-full bg-white/70 px-3 py-1">
+              {category.title}
+            </span>
+            <span className="rounded-full bg-white/70 px-3 py-1">
+              {listing.neighborhood}
+            </span>
+            <span className="rounded-full bg-white/70 px-3 py-1">
+              {priceTierLabel[listing.priceTier]}
+            </span>
+            <span className="rounded-full bg-white/70 px-3 py-1">
+              ★ {listing.rating.toFixed(1)}
+            </span>
             <button
               type="button"
-              onClick={() => toggleFavorite(favoriteSelection)}
-              aria-pressed={favorite}
+              onClick={() => toggleFavourite(favouriteSelection)}
+              aria-pressed={favourite}
               className="rounded-full bg-white/70 px-3 py-1 inline-flex items-center gap-1.5 hover:bg-white transition"
             >
-              <Heart size={13} className={favorite ? "fill-[#0b6b5d] text-[#0b6b5d]" : "text-[#0b6b5d]"} />
-              {favorite ? "Saved" : "Save"}
+              <Heart
+                size={13}
+                className={
+                  favourite ? "fill-[#0b6b5d] text-[#0b6b5d]" : "text-[#0b6b5d]"
+                }
+              />
+              {favourite ? "Saved" : "Save"}
             </button>
           </div>
 
-          <div className="relative rounded-[2rem] overflow-hidden bg-surface-container-low h-[24rem] sm:h-[30rem] shadow-lg">
-            <Image src={selectedImage} alt={listing.name} fill className="object-cover" priority />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#003531]/80 via-[#003531]/35 to-transparent p-5 sm:p-6">
+          <div className="relative rounded-4xl overflow-hidden bg-surface-container-low h-96 sm:h-120 shadow-lg">
+            <Image
+              src={selectedImage}
+              alt={listing.name}
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-[#003531]/80 via-[#003531]/35 to-transparent p-5 sm:p-6">
               <div className="max-w-2xl space-y-2 text-white">
                 <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
-                  <span className="h-2 w-2 rounded-full bg-emerald-300" /> Curated booking experience
+                  <span className="h-2 w-2 rounded-full bg-emerald-300" />{" "}
+                  Curated booking experience
                 </div>
-                <h1 className="text-3xl sm:text-5xl font-extrabold leading-tight">{listing.name}</h1>
+                <h1 className="text-3xl sm:text-5xl font-extrabold leading-tight">
+                  {listing.name}
+                </h1>
                 <p className="text-sm sm:text-base text-white/85 max-w-xl">
-                  {category.title} • starting at ₹{listing.startingFrom} • refined service with a calm, editorial look.
+                  {category.title} • starting at ₹{listing.startingFrom} •
+                  refined service with a calm, editorial look.
                 </p>
               </div>
             </div>
@@ -177,13 +219,20 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
                 key={image}
                 type="button"
                 onClick={() => setSelectedImage(image)}
-                className={`relative h-24 w-32 flex-shrink-0 overflow-hidden rounded-2xl border-2 transition ${
-                  selectedImage === image ? "border-[#0b6b5d] shadow-lg scale-[1.02]" : "border-transparent opacity-80 hover:opacity-100"
+                className={`relative h-24 w-32 shrink-0 overflow-hidden rounded-2xl border-2 transition ${
+                  selectedImage === image
+                    ? "border-[#0b6b5d] shadow-lg scale-[1.02]"
+                    : "border-transparent opacity-80 hover:opacity-100"
                 }`}
                 aria-pressed={selectedImage === image}
                 aria-label={`Preview image ${index + 1}`}
               >
-                <Image src={image} alt={`${listing.name} preview ${index + 1}`} fill className="object-cover" />
+                <Image
+                  src={image}
+                  alt={`${listing.name} preview ${index + 1}`}
+                  fill
+                  className="object-cover"
+                />
               </button>
             ))}
           </div>
@@ -192,14 +241,20 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
             <div className="rounded-3xl bg-white/80 p-6 shadow-sm border border-white/60 space-y-4">
               <h2 className="text-xl font-semibold">The Art of Stillness</h2>
               <p className="text-sm text-[#1e5a52] leading-7">
-                Serenity Spa is a sanctuary of wellness, designed to harmonize body and mind through botanical
-                therapies, quiet architecture, and highly personalized care.
+                Serenity Spa is a sanctuary of wellness, designed to harmonize
+                body and mind through botanical therapies, quiet architecture,
+                and highly personalized care.
               </p>
             </div>
             <div className="rounded-3xl bg-[#b3efe5] p-6 shadow-sm border border-white/40 space-y-3">
-              <p className="text-xs uppercase tracking-wide text-[#1e5a52] font-semibold">Quick details</p>
+              <p className="text-xs uppercase tracking-wide text-[#1e5a52] font-semibold">
+                Quick details
+              </p>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <MiniStat label="Duration" value={`${selectedService.mins} min`} />
+                <MiniStat
+                  label="Duration"
+                  value={`${selectedService.mins} min`}
+                />
                 <MiniStat label="Price" value={`₹${selectedService.price}`} />
                 <MiniStat label="Location" value={listing.address} />
                 <MiniStat label="Staff" value="Elena M." />
@@ -224,14 +279,26 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
                 >
                   <div className="space-y-2 max-w-[60%]">
                     <h4 className="text-lg font-semibold">{s.name}</h4>
-                    <p className={`text-sm ${selectedService.name === s.name ? "text-white/80" : "text-[#1e5a52]"}`}>{s.desc}</p>
-                    <span className={`mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${selectedService.name === s.name ? "bg-white/15 text-white" : "bg-[#e6f7f2] text-[#0b6b5d]"}`}>
-                      {selectedService.name === s.name ? "Selected" : "Select service"}
+                    <p
+                      className={`text-sm ${selectedService.name === s.name ? "text-white/80" : "text-[#1e5a52]"}`}
+                    >
+                      {s.desc}
+                    </p>
+                    <span
+                      className={`mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${selectedService.name === s.name ? "bg-white/15 text-white" : "bg-[#e6f7f2] text-[#0b6b5d]"}`}
+                    >
+                      {selectedService.name === s.name
+                        ? "Selected"
+                        : "Select service"}
                     </span>
                   </div>
                   <div className="text-right shrink-0">
                     <div className="text-xl font-bold">₹{s.price}</div>
-                    <div className={`text-sm ${selectedService.name === s.name ? "text-white/70" : "text-[#1e5a52]"}`}>{s.mins} mins</div>
+                    <div
+                      className={`text-sm ${selectedService.name === s.name ? "text-white/70" : "text-[#1e5a52]"}`}
+                    >
+                      {s.mins} mins
+                    </div>
                   </div>
                 </button>
               ))}
@@ -251,7 +318,12 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
                   className={`relative rounded-2xl overflow-hidden bg-surface-container-low h-40 transform transition ${selectedImage === img ? "scale-[1.02] ring-2 ring-[#0b6b5d]" : "hover:scale-105"}`}
                   aria-pressed={selectedImage === img}
                 >
-                  <Image src={img} alt={`Gallery ${i}`} fill className="object-cover" />
+                  <Image
+                    src={img}
+                    alt={`Gallery ${i}`}
+                    fill
+                    className="object-cover"
+                  />
                 </button>
               ))}
             </div>
@@ -260,17 +332,27 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
               <h3 className="text-lg font-bold mb-4">Voices of Serenity</h3>
               <div className="space-y-4">
                 {reviews.map((r) => (
-                  <div key={r.name} className="bg-[#d5fff9] p-4 rounded-xl">
+                  <div key={r.name} className="bg-primary-200 p-4 rounded-xl">
                     <div className="flex items-center gap-3 mb-2">
                       <div className="w-10 h-10 rounded-full overflow-hidden">
-                        <Image src={r.avatar} alt={r.name} width={40} height={40} className="object-cover" />
+                        <Image
+                          src={r.avatar}
+                          alt={r.name}
+                          width={40}
+                          height={40}
+                          className="object-cover"
+                        />
                       </div>
                       <div>
                         <div className="font-semibold text-sm">{r.name}</div>
-                        <div className="text-xs text-emerald-700/70">{r.rating} ★</div>
+                        <div className="text-xs text-emerald-700/70">
+                          {r.rating} ★
+                        </div>
                       </div>
                     </div>
-                    <p className="text-sm italic text-on-surface-variant">"{r.text}"</p>
+                    <p className="text-sm italic text-on-surface-variant">
+                      &quot;{r.text}&quot;
+                    </p>
                   </div>
                 ))}
               </div>
@@ -280,7 +362,7 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
 
         {/* Sidebar (fixed at right) */}
         <aside className="lg:col-span-2 col-span-12">
-          <div className="lg:fixed lg:top-20 lg:right-8 lg:w-[24rem] xl:w-[26rem] w-full bg-gradient-to-b from-white/85 to-[#e6f8f3] p-5 rounded-3xl shadow-md border border-white/70 backdrop-blur-md z-50 max-h-[calc(100vh-5rem)] overflow-y-auto">
+          <div className="lg:fixed lg:top-20 lg:right-8 lg:w-[24rem] xl:w-104 w-full bg-linear-to-b from-white/85 to-[#e6f8f3] p-5 rounded-3xl shadow-md border border-white/70 backdrop-blur-md z-50 max-h-[calc(100vh-5rem)] overflow-y-auto">
             <div className="mb-4">
               <h2 className="text-xl font-semibold">Booking Concierge</h2>
               <p className="text-sm text-[#2a6b62]">Secure your appointment</p>
@@ -333,21 +415,46 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
                 {tab === "availability" && (
                   <div className="space-y-4 rounded-2xl bg-[#f4fffb] p-3 border border-[#d6eee8] transition-all duration-300">
                     <div className="flex items-center justify-between">
-                      <button aria-label="Previous month" onClick={goToPreviousMonth} className="p-1 rounded transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                      <button
+                        aria-label="Previous month"
+                        onClick={goToPreviousMonth}
+                        className="p-1 rounded transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      >
                         <ArrowLeft size={16} className="text-emerald-800" />
                       </button>
-                      <div className="text-sm font-bold">{new Date(calendarYear, calendarMonth).toLocaleString("default", { month: "long", year: "numeric" })}</div>
-                      <button aria-label="Next month" onClick={goToNextMonth} className="p-1 rounded transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                      <div className="text-sm font-bold">
+                        {new Date(calendarYear, calendarMonth).toLocaleString(
+                          "default",
+                          { month: "long", year: "numeric" },
+                        )}
+                      </div>
+                      <button
+                        aria-label="Next month"
+                        onClick={goToNextMonth}
+                        className="p-1 rounded transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      >
                         <ArrowRight size={16} className="text-emerald-800" />
                       </button>
                     </div>
                     <div className="grid grid-cols-7 gap-1 text-center text-[11px] mb-1 text-emerald-700/80">
-                      <div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div><div>S</div>
+                      <div>M</div>
+                      <div>T</div>
+                      <div>W</div>
+                      <div>T</div>
+                      <div>F</div>
+                      <div>S</div>
+                      <div>S</div>
                     </div>
                     <div className="grid grid-cols-7 gap-1 mb-2">
                       {calendarCells.map((day, index) => {
                         if (!day) {
-                          return <div key={`empty-${index}`} className="h-8" aria-hidden="true" />;
+                          return (
+                            <div
+                              key={`empty-${index}`}
+                              className="h-8"
+                              aria-hidden="true"
+                            />
+                          );
                         }
 
                         const date = new Date(calendarYear, calendarMonth, day);
@@ -369,18 +476,40 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
                       })}
                     </div>
                     <div>
-                      <div className="text-xs font-bold mb-2">Morning Slots</div>
+                      <div className="text-xs font-bold mb-2">
+                        Morning Slots
+                      </div>
                       <div className="flex flex-col gap-2">
                         {morningSlots.map((s) => (
-                          <button key={s.time} onClick={() => setBooking((b) => ({ ...b, slot: s }))} aria-pressed={booking.slot?.time === s.time} className={`py-2 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 ${booking.slot?.time === s.time ? "bg-emerald-800 text-white" : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100"}`}>{s.time}</button>
+                          <button
+                            key={s.time}
+                            onClick={() =>
+                              setBooking((b) => ({ ...b, slot: s }))
+                            }
+                            aria-pressed={booking.slot?.time === s.time}
+                            className={`py-2 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 ${booking.slot?.time === s.time ? "bg-emerald-800 text-white" : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100"}`}
+                          >
+                            {s.time}
+                          </button>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs font-bold mb-2">Afternoon Slots</div>
+                      <div className="text-xs font-bold mb-2">
+                        Afternoon Slots
+                      </div>
                       <div className="flex flex-col gap-2">
                         {afternoonSlots.map((s) => (
-                          <button key={s.time} onClick={() => setBooking((b) => ({ ...b, slot: s }))} aria-pressed={booking.slot?.time === s.time} className={`py-2 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 ${booking.slot?.time === s.time ? "bg-emerald-800 text-white" : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100"}`}>{s.time}</button>
+                          <button
+                            key={s.time}
+                            onClick={() =>
+                              setBooking((b) => ({ ...b, slot: s }))
+                            }
+                            aria-pressed={booking.slot?.time === s.time}
+                            className={`py-2 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 ${booking.slot?.time === s.time ? "bg-emerald-800 text-white" : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100"}`}
+                          >
+                            {s.time}
+                          </button>
                         ))}
                       </div>
                     </div>
@@ -389,10 +518,17 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
                 {tab === "services" && (
                   <div className="space-y-3 rounded-2xl bg-[#f4fffb] p-3 border border-[#d6eee8] transition-all duration-300">
                     {services.map((s) => (
-                      <div key={s.name} className="p-3 rounded-lg bg-emerald-50 transition-all duration-200 hover:bg-emerald-100">
+                      <div
+                        key={s.name}
+                        className="p-3 rounded-lg bg-emerald-50 transition-all duration-200 hover:bg-emerald-100"
+                      >
                         <div className="font-semibold">{s.name}</div>
-                        <div className="text-sm text-emerald-700/80">₹{s.price} • {s.mins} mins</div>
-                        <div className="text-xs text-emerald-700/60 mt-1">{s.desc}</div>
+                        <div className="text-sm text-emerald-700/80">
+                          ₹{s.price} • {s.mins} mins
+                        </div>
+                        <div className="text-xs text-emerald-700/60 mt-1">
+                          {s.desc}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -400,9 +536,14 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
                 {tab === "staff" && (
                   <div className="space-y-3 rounded-2xl bg-[#f4fffb] p-3 border border-[#d6eee8] transition-all duration-300">
                     {mockStaff.map((st) => (
-                      <div key={st.name} className="p-3 rounded-lg bg-emerald-50 transition-all duration-200 hover:bg-emerald-100">
+                      <div
+                        key={st.name}
+                        className="p-3 rounded-lg bg-emerald-50 transition-all duration-200 hover:bg-emerald-100"
+                      >
                         <div className="font-semibold">{st.name}</div>
-                        <div className="text-sm text-emerald-700/80">{st.role}</div>
+                        <div className="text-sm text-emerald-700/80">
+                          {st.role}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -410,33 +551,41 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
                 {tab === "summary" && (
                   <div className="p-3 rounded-2xl bg-[#f4fffb] border border-[#d6eee8] transition-all duration-300">
                     <div className="font-semibold">Booking Summary</div>
-                    <div className="text-sm text-emerald-700/80 mt-2">Date: {booking.date.toDateString()}</div>
-                    <div className="text-sm text-emerald-700/80">Time: {booking.slot?.time ?? "Not selected"}</div>
+                    <div className="text-sm text-emerald-700/80 mt-2">
+                      Date: {booking.date.toDateString()}
+                    </div>
+                    <div className="text-sm text-emerald-700/80">
+                      Time: {booking.slot?.time ?? "Not selected"}
+                    </div>
                   </div>
                 )}
                 {selectedService && (
                   <div className="mb-3 p-3 rounded-lg bg-white border border-[#d6eee8]">
-                    <div className="text-sm font-semibold">{selectedService.name}</div>
-                    <div className="text-sm text-emerald-700/80">₹{selectedService.price} • {selectedService.mins} mins</div>
+                    <div className="text-sm font-semibold">
+                      {selectedService.name}
+                    </div>
+                    <div className="text-sm text-emerald-700/80">
+                      ₹{selectedService.price} • {selectedService.mins} mins
+                    </div>
                   </div>
                 )}
                 <div className="mt-4">
                   <button
                     onClick={() => {
                       if (!booking.slot) return;
-                        const bookingHref = buildBookingSearchParams({
-                          company: listing.name,
-                          category: category.title,
-                          service: selectedService.name,
-                          price: selectedService.price,
-                          duration: selectedService.mins,
-                          staff: "Elena M.",
-                          date: booking.date.toDateString(),
-                          time: booking.slot.time,
-                          image: selectedImage,
-                        });
+                      const bookingHref = buildBookingSearchParams({
+                        company: listing.name,
+                        category: category.title,
+                        service: selectedService.name,
+                        price: selectedService.price,
+                        duration: selectedService.mins,
+                        staff: "Elena M.",
+                        date: booking.date.toDateString(),
+                        time: booking.slot.time,
+                        image: selectedImage,
+                      });
 
-                        router.push(`/bookings?${bookingHref}`);
+                      router.push(`/bookings?${bookingHref}`);
                     }}
                     disabled={!booking.slot}
                     className="w-full py-3 rounded-full bg-[#0b6b5d] hover:bg-[#0a5f53] text-white font-bold shadow transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-4 focus:ring-emerald-200"
@@ -456,7 +605,9 @@ const CompanyProfile: FC<CompanyProfileProps> = ({ listing, category }) => {
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-2xl bg-white/80 px-3 py-3 border border-white/70">
-      <p className="text-[10px] uppercase tracking-wide text-[#1e5a52] font-semibold">{label}</p>
+      <p className="text-[10px] uppercase tracking-wide text-[#1e5a52] font-semibold">
+        {label}
+      </p>
       <p className="font-semibold text-[#003531] mt-1">{value}</p>
     </div>
   );

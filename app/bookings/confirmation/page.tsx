@@ -1,6 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CheckCircle2, CalendarDays, Clock3, MapPin, Sparkles } from "lucide-react";
+import {
+  CheckCircle2,
+  CalendarDays,
+  Clock3,
+  MapPin,
+  Sparkles,
+} from "lucide-react";
 import {
   buildBookingSearchParams,
   createGuestDetails,
@@ -12,9 +18,12 @@ interface ConfirmationPageProps {
   searchParams?: BookingSearchParams | Promise<BookingSearchParams>;
 }
 
-export default async function BookingConfirmationPage({ searchParams }: ConfirmationPageProps) {
+export default async function BookingConfirmationPage({
+  searchParams,
+}: ConfirmationPageProps) {
   const booking = await resolveBookingDetails(searchParams);
-  const searchParamsObject = searchParams instanceof Promise ? await searchParams : searchParams;
+  const searchParamsObject =
+    searchParams instanceof Promise ? await searchParams : searchParams;
   const guest = createGuestDetails(searchParamsObject);
   const paymentId = Array.isArray(searchParamsObject?.paymentId)
     ? searchParamsObject?.paymentId[0]
@@ -26,7 +35,7 @@ export default async function BookingConfirmationPage({ searchParams }: Confirma
   const bookingQuery = buildBookingSearchParams(booking);
 
   return (
-    <section className="w-full bg-[#d5fff9] text-[#003531]">
+    <section className="w-full bg-primary-200 text-[#003531]">
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-8 py-10 lg:py-16">
         <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-8 items-center">
           <div className="space-y-6">
@@ -34,36 +43,69 @@ export default async function BookingConfirmationPage({ searchParams }: Confirma
               <CheckCircle2 size={16} /> Booking confirmed
             </div>
             <div className="space-y-3">
-              <h1 className="text-4xl sm:text-5xl font-bold">You’re all set.</h1>
+              <h1 className="text-4xl sm:text-5xl font-bold">
+                You’re all set.
+              </h1>
               <p className="text-lg text-[#1e5a52] max-w-2xl">
-                Your appointment at {booking.company} has been reserved. We’ve saved the selected service,
-                image, and schedule so the entire booking stays connected.
+                Your appointment at {booking.company} has been reserved. We’ve
+                saved the selected service, image, and schedule so the entire
+                booking stays connected.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4 max-w-2xl">
-              <InfoCard icon={<Sparkles size={18} />} label="Service" value={booking.service} />
-              <InfoCard icon={<MapPin size={18} />} label="Location" value={booking.company} />
-              <InfoCard icon={<CalendarDays size={18} />} label="Date" value={booking.date} />
-              <InfoCard icon={<Clock3 size={18} />} label="Time" value={booking.time} />
+              <InfoCard
+                icon={<Sparkles size={18} />}
+                label="Service"
+                value={booking.service}
+              />
+              <InfoCard
+                icon={<MapPin size={18} />}
+                label="Location"
+                value={booking.company}
+              />
+              <InfoCard
+                icon={<CalendarDays size={18} />}
+                label="Date"
+                value={booking.date}
+              />
+              <InfoCard
+                icon={<Clock3 size={18} />}
+                label="Time"
+                value={booking.time}
+              />
             </div>
 
             {(guest.fullName || guest.email) && (
               <div className="max-w-2xl rounded-2xl bg-white/85 p-4 border border-white/70 shadow-sm">
-                <p className="text-[11px] uppercase tracking-wide text-[#1e5a52] font-semibold">Guest details</p>
+                <p className="text-[11px] uppercase tracking-wide text-[#1e5a52] font-semibold">
+                  Guest details
+                </p>
                 <div className="mt-2 grid sm:grid-cols-2 gap-3 text-sm">
-                  <span className="font-semibold text-[#003531]">{guest.fullName || "Guest"}</span>
-                  <span className="text-[#1e5a52]">{guest.email || "No email added"}</span>
-                  <span className="text-[#1e5a52]">{guest.phone || "No phone added"}</span>
-                  <span className="text-[#1e5a52]">{guest.notes || "No special notes"}</span>
+                  <span className="font-semibold text-primary-200">
+                    {guest.fullName || "Guest"}
+                  </span>
+                  <span className="text-[#1e5a52]">
+                    {guest.email || "No email added"}
+                  </span>
+                  <span className="text-[#1e5a52]">
+                    {guest.phone || "No phone added"}
+                  </span>
+                  <span className="text-[#1e5a52]">
+                    {guest.notes || "No special notes"}
+                  </span>
                 </div>
               </div>
             )}
 
             {paymentId && (
               <div className="max-w-2xl rounded-2xl bg-white/85 p-4 border border-white/70 shadow-sm">
-                <p className="text-[11px] uppercase tracking-wide text-[#1e5a52] font-semibold">Payment reference</p>
-                <p className="mt-1 font-semibold text-[#003531] break-all">{paymentId}</p>
+                <p className="text-[11px] uppercase tracking-wide text-[#1e5a52] font-semibold">
+                  Payment reference
+                </p>
+                <p className="mt-1 font-semibold text-[#003531] break-all">
+                  {paymentId}
+                </p>
               </div>
             )}
 
@@ -75,7 +117,9 @@ export default async function BookingConfirmationPage({ searchParams }: Confirma
                     : "bg-yellow-50 border-yellow-200"
                 }`}
               >
-                <p className={`text-sm ${emailStatus === "sent" ? "text-green-700" : "text-yellow-700"}`}>
+                <p
+                  className={`text-sm ${emailStatus === "sent" ? "text-green-700" : "text-yellow-700"}`}
+                >
                   {emailStatus === "sent"
                     ? "✓ Confirmation email sent successfully. Check your inbox for details."
                     : emailStatus === "unavailable"
@@ -108,13 +152,20 @@ export default async function BookingConfirmationPage({ searchParams }: Confirma
           </div>
 
           <div className="bg-[#b3efe5] rounded-3xl p-5 sm:p-6 shadow-sm">
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
-              <Image src={booking.image} alt={booking.service} fill className="object-cover" />
+            <div className="relative aspect-4/3 rounded-2xl overflow-hidden">
+              <Image
+                src={booking.image}
+                alt={booking.service}
+                fill
+                className="object-cover"
+              />
             </div>
             <div className="mt-5 space-y-3">
               <div className="flex items-center justify-between gap-4">
                 <h2 className="text-xl font-semibold">{booking.service}</h2>
-                <span className="font-bold text-lg">${booking.price.toFixed(2)}</span>
+                <span className="font-bold text-lg">
+                  ${booking.price.toFixed(2)}
+                </span>
               </div>
               <p className="text-sm text-[#1e5a52]">
                 {booking.duration} minutes with {booking.staff}
@@ -122,11 +173,15 @@ export default async function BookingConfirmationPage({ searchParams }: Confirma
               <div className="border-t border-[#8ccfc2] pt-4 space-y-2 text-sm">
                 <div className="flex items-center justify-between">
                   <span>Subtotal</span>
-                  <span className="font-semibold">${booking.price.toFixed(2)}</span>
+                  <span className="font-semibold">
+                    ${booking.price.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Tax</span>
-                  <span className="font-semibold">${(total - booking.price).toFixed(2)}</span>
+                  <span className="font-semibold">
+                    ${(total - booking.price).toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-lg font-bold pt-2">
                   <span>Total</span>
@@ -154,7 +209,9 @@ function InfoCard({
     <div className="rounded-2xl bg-white/85 p-4 border border-white/70 shadow-sm flex items-start gap-3">
       <span className="text-[#0b6b5d] mt-0.5">{icon}</span>
       <div>
-        <p className="text-[11px] uppercase tracking-wide text-[#1e5a52] font-semibold">{label}</p>
+        <p className="text-[11px] uppercase tracking-wide text-[#1e5a52] font-semibold">
+          {label}
+        </p>
         <p className="font-semibold">{value}</p>
       </div>
     </div>
