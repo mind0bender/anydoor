@@ -14,6 +14,10 @@ export interface BookingSearchParams {
   email?: BookingQueryValue;
   phone?: BookingQueryValue;
   notes?: BookingQueryValue;
+  paymentId?: BookingQueryValue;
+  orderId?: BookingQueryValue;
+  signature?: BookingQueryValue;
+  emailStatus?: BookingQueryValue;
 }
 
 export interface GuestDetails {

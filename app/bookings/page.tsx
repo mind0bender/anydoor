@@ -20,7 +20,7 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
         <div className="lg:col-span-8 space-y-8">
           <header>
             <h1 className="text-4xl font-bold">Checkout</h1>
-            <p className="mt-2 text-[#1e5a52]">Finalize your curated experience in three simple steps.</p>
+            <p className="mt-2 text-[#1e5a52]">Finalize your curated experience in four simple steps.</p>
           </header>
 
           <div className="flex items-center gap-3 sm:gap-5 text-sm sm:text-base">
@@ -28,7 +28,9 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
             <span className="h-px w-8 bg-[#9cd8cc]" />
             <StepChip number={2} label="Guest Details" />
             <span className="h-px w-8 bg-[#9cd8cc]" />
-            <StepChip number={3} label="Confirmation" />
+            <StepChip number={3} label="Payment" />
+            <span className="h-px w-8 bg-[#9cd8cc]" />
+            <StepChip number={4} label="Confirmation" />
           </div>
 
           <article className="rounded-3xl bg-[#b3efe5] p-5 sm:p-6">
@@ -104,8 +106,8 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
             <div className="space-y-5 text-sm text-[#1e5a52]">
               <StepRow icon={<Leaf size={16} />} step="Step 1" label="Services" active />
               <StepRow icon={<Users size={16} />} step="Step 2" label="Guest Details" />
-              <StepRow icon={<CalendarDays size={16} />} step="Step 3" label="Confirmation" />
-              <StepRow icon={<Clock3 size={16} />} step="Step 4" label="Complete" />
+              <StepRow icon={<CalendarDays size={16} />} step="Step 3" label="Payment" />
+              <StepRow icon={<Clock3 size={16} />} step="Step 4" label="Confirmation" />
             </div>
 
             <div className="border-t border-[#8ccfc2] pt-4 space-y-3 text-sm">
